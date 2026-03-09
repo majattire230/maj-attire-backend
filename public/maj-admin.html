@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M.A.J Attire — Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #0a0a0a;
+  --white: #f5f0eb;
+  --cream: #ede8e0;
+  --gold: #c9a96e;
+  --gold-light: #e8d5b0;
+  --charcoal: #2a2a2a;
+  --mid: #6b6560;
+  --accent: #8b3a3a;
+  --green: #2d6a4f;
+  --sidebar: #111111;
+  --card: #ffffff;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Montserrat', sans-serif; background: #f0ece6; color: var(--black); display: flex; min-height: 100vh; }
+
+/* LOGIN */
+#loginScreen {
+  position: fixed; inset: 0; background: var(--black);
+  display: flex; align-items: center; justify-content: center; z-index: 9999;
+}
+#loginScreen.hidden { display: none; }
+.login-box {
+  background: var(--white); padding: 3rem; width: 380px;
+  animation: fadeUp 0.5s ease;
+}
+.login-logo { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; letter-spacing: 0.2em; margin-bottom: 0.3rem; }
+.login-logo span { color: var(--gold); }
+.login-sub { font-size: 0.6rem; letter-spacing: 0.3em; color: var(--mid); text-transform: uppercase; margin-bottom: 2.5rem; }
+.input-group { margin-bottom: 1.2rem; }
+.input-group label { display: block; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mid); margin-bottom: 0.5rem; }
+.input-group input { width: 100%; padding: 0.9rem 1rem; border: 1px solid rgba(10,10,10,0.15); background: var(--cream); font-family: 'Montserrat', sans-serif; font-size: 0.8rem; outline: none; transition: border-color 0.2s; }
+.input-group input:focus { border-color: var(--gold); }
+.login-btn { width: 100%; padding: 1rem; background: var(--black); color: var(--white); border: none; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; cursor: pointer; transition: background 0.3s; margin-top: 0.5rem; }
+.login-btn:hover { background: var(--gold); color: var(--black); }
+.login-error { color: var(--accent); font-size: 0.7rem; margin-bottom: 1rem; display: none; }
+.login-error.show { display: block; }
+.login-hint { font-size: 0.6rem; color: var(--mid); letter-spacing: 0.05em; margin-top: 1.5rem; text-align: center; }
+
+/* SIDEBAR */
+.sidebar {
+  width: 240px; background: var(--sidebar); min-height: 100vh;
+  position: fixed; left: 0; top: 0; bottom: 0;
+  display: flex; flex-direction: column;
+  transition: transform 0.3s;
+}
+.sidebar-logo { padding: 2rem 1.5rem; border-bottom: 1px solid rgba(201,169,110,0.1); }
+.sidebar-logo-text { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 300; color: var(--white); letter-spacing: 0.2em; }
+.sidebar-logo-text span { color: var(--gold); }
+.sidebar-logo-sub { font-size: 0.55rem; letter-spacing: 0.3em; color: var(--mid); text-transform: uppercase; margin-top: 0.2rem; }
+.sidebar-nav { flex: 1; padding: 1.5rem 0; }
+.nav-section { margin-bottom: 2rem; }
+.nav-section-label { font-size: 0.5rem; letter-spacing: 0.4em; text-transform: uppercase; color: rgba(107,101,96,0.6); padding: 0 1.5rem; margin-bottom: 0.5rem; }
+.nav-item {
+  display: flex; align-items: center; gap: 0.8rem;
+  padding: 0.75rem 1.5rem; cursor: pointer;
+  color: rgba(245,240,235,0.5); font-size: 0.7rem;
+  letter-spacing: 0.1em; transition: all 0.2s;
+  border-left: 2px solid transparent;
+}
+.nav-item:hover { color: var(--white); background: rgba(201,169,110,0.05); }
+.nav-item.active { color: var(--gold); border-left-color: var(--gold); background: rgba(201,169,110,0.08); }
+.nav-icon { font-size: 1rem; width: 20px; text-align: center; }
+.sidebar-footer { padding: 1.5rem; border-top: 1px solid rgba(201,169,110,0.1); }
+.admin-info { font-size: 0.65rem; color: var(--mid); margin-bottom: 0.8rem; }
+.admin-name { color: var(--gold); font-weight: 500; }
+.logout-btn { width: 100%; padding: 0.6rem; background: none; border: 1px solid rgba(201,169,110,0.2); color: rgba(245,240,235,0.4); font-family: 'Montserrat', sans-serif; font-size: 0.6rem; letter-spacing: 0.2em; cursor: pointer; transition: all 0.2s; }
+.logout-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* MAIN */
+.main { margin-left: 240px; flex: 1; padding: 2rem; }
+.page-header { margin-bottom: 2rem; }
+.page-title { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; letter-spacing: 0.05em; }
+.page-title em { color: var(--gold); font-style: italic; }
+.page-sub { font-size: 0.65rem; color: var(--mid); letter-spacing: 0.1em; margin-top: 0.3rem; }
+
+/* PAGES */
+.page { display: none; }
+.page.active { display: block; }
+
+/* STATS */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-bottom: 2rem; }
+.stat-card { background: var(--card); padding: 1.5rem; border-left: 3px solid var(--gold); }
+.stat-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mid); margin-bottom: 0.5rem; }
+.stat-value { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 300; color: var(--black); }
+.stat-sub { font-size: 0.6rem; color: var(--mid); margin-top: 0.3rem; }
+
+/* TABLE */
+.table-card { background: var(--card); padding: 1.5rem; margin-bottom: 1.5rem; }
+.table-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; }
+.table-card-title { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; }
+.search-input { padding: 0.5rem 1rem; border: 1px solid rgba(10,10,10,0.1); background: var(--cream); font-family: 'Montserrat', sans-serif; font-size: 0.7rem; outline: none; width: 200px; }
+.search-input:focus { border-color: var(--gold); }
+table { width: 100%; border-collapse: collapse; }
+th { font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mid); padding: 0.7rem 1rem; text-align: left; border-bottom: 1px solid rgba(10,10,10,0.08); }
+td { font-size: 0.72rem; padding: 0.9rem 1rem; border-bottom: 1px solid rgba(10,10,10,0.04); color: var(--charcoal); }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(201,169,110,0.03); }
+
+/* BADGES */
+.badge { display: inline-block; padding: 0.2rem 0.6rem; font-size: 0.55rem; letter-spacing: 0.1em; font-weight: 600; text-transform: uppercase; }
+.badge-pending { background: #fff3cd; color: #856404; }
+.badge-confirmed { background: #cce5ff; color: #004085; }
+.badge-processing { background: #d4edda; color: #155724; }
+.badge-shipped { background: #d1ecf1; color: #0c5460; }
+.badge-delivered { background: #d4edda; color: #155724; }
+.badge-cancelled { background: #f8d7da; color: #721c24; }
+.badge-paid { background: #d4edda; color: #155724; }
+.badge-unpaid { background: #f8d7da; color: #721c24; }
+.badge-new { background: rgba(201,169,110,0.15); color: var(--gold); }
+.badge-sale { background: rgba(139,58,58,0.1); color: var(--accent); }
+
+/* ACTION BUTTONS */
+.btn { padding: 0.4rem 0.9rem; border: none; font-family: 'Montserrat', sans-serif; font-size: 0.6rem; letter-spacing: 0.15em; cursor: pointer; transition: all 0.2s; }
+.btn-gold { background: var(--gold); color: var(--black); }
+.btn-gold:hover { background: #b8954d; }
+.btn-outline { background: none; border: 1px solid rgba(10,10,10,0.2); color: var(--charcoal); }
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+.btn-danger { background: none; border: 1px solid rgba(139,58,58,0.3); color: var(--accent); }
+.btn-danger:hover { background: var(--accent); color: white; }
+
+/* STATUS SELECTOR */
+.status-select { padding: 0.3rem 0.6rem; border: 1px solid rgba(10,10,10,0.15); background: var(--cream); font-family: 'Montserrat', sans-serif; font-size: 0.65rem; outline: none; cursor: pointer; }
+
+/* TOP PRODUCTS */
+.top-products-list { list-style: none; }
+.top-product-item { display: flex; align-items: center; gap: 1rem; padding: 0.8rem 0; border-bottom: 1px solid rgba(10,10,10,0.05); }
+.top-product-item:last-child { border-bottom: none; }
+.top-product-rank { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 300; color: var(--gold-light); width: 30px; }
+.top-product-info { flex: 1; }
+.top-product-name { font-size: 0.75rem; font-weight: 500; margin-bottom: 0.2rem; }
+.top-product-cat { font-size: 0.6rem; color: var(--mid); letter-spacing: 0.1em; }
+.top-product-stats { text-align: right; }
+.top-product-revenue { font-size: 0.75rem; font-weight: 600; color: var(--black); }
+.top-product-units { font-size: 0.6rem; color: var(--mid); }
+
+/* GRID 2 COL */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+
+/* NOTIFICATION */
+.admin-notif { position: fixed; top: 1.5rem; right: 1.5rem; background: var(--black); color: var(--white); padding: 0.9rem 1.5rem; font-size: 0.7rem; letter-spacing: 0.1em; z-index: 9998; transform: translateX(120%); transition: transform 0.4s; border-left: 3px solid var(--gold); }
+.admin-notif.show { transform: translateX(0); }
+
+/* LOADING */
+.loading { display: flex; align-items: center; justify-content: center; padding: 3rem; color: var(--mid); font-size: 0.7rem; letter-spacing: 0.2em; }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">M.A.J <span>Attire</span></div>
+    <p class="login-sub">Admin Panel</p>
+    <p class="login-error" id="loginErr"></p>
+    <div class="input-group">
+      <label>Email</label>
+      <input type="email" id="adminEmail" placeholder="admin@majattire.com" value="admin@majattire.com">
+    </div>
+    <div class="input-group">
+      <label>Password</label>
+      <input type="password" id="adminPassword" placeholder="••••••••" value="admin123">
+    </div>
+    <button class="login-btn" onclick="adminLogin()">Access Dashboard</button>
+    <p class="login-hint">Default: admin@majattire.com / admin123</p>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-text">M.A.J <span>Attire</span></div>
+    <div class="sidebar-logo-sub">Admin Panel</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <div class="nav-section-label">Overview</div>
+      <div class="nav-item active" onclick="showPage('dashboard')"><span class="nav-icon">📊</span> Dashboard</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Store</div>
+      <div class="nav-item" onclick="showPage('orders')"><span class="nav-icon">📦</span> Orders</div>
+      <div class="nav-item" onclick="showPage('products')"><span class="nav-icon">👔</span> Products</div>
+      <div class="nav-item" onclick="showPage('customers')"><span class="nav-icon">👥</span> Customers</div>
+      <div class="nav-item" onclick="showPage('newsletter')"><span class="nav-icon">✉️</span> Newsletter</div>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="admin-info">Logged in as<br><span class="admin-name" id="adminNameDisplay">Admin</span></div>
+    <button class="logout-btn" onclick="adminLogout()">LOGOUT</button>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- DASHBOARD -->
+  <div class="page active" id="page-dashboard">
+    <div class="page-header">
+      <h1 class="page-title">Dashboard <em>Overview</em></h1>
+      <p class="page-sub" id="dashDate"></p>
+    </div>
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card"><div class="stat-label">Total Revenue</div><div class="stat-value" id="statRevenue">—</div><div class="stat-sub">All time</div></div>
+      <div class="stat-card"><div class="stat-label">Total Orders</div><div class="stat-value" id="statOrders">—</div><div class="stat-sub">All time</div></div>
+      <div class="stat-card"><div class="stat-label">Customers</div><div class="stat-value" id="statCustomers">—</div><div class="stat-sub">Registered</div></div>
+      <div class="stat-card"><div class="stat-label">Pending Orders</div><div class="stat-value" id="statPending">—</div><div class="stat-sub">Needs action</div></div>
+    </div>
+    <div class="grid-2">
+      <div class="table-card">
+        <div class="table-card-header"><span class="table-card-title">Recent Orders</span></div>
+        <table>
+          <thead><tr><th>Order ID</th><th>Customer</th><th>Amount</th><th>Status</th></tr></thead>
+          <tbody id="recentOrdersTable"><tr><td colspan="4" class="loading">Loading...</td></tr></tbody>
+        </table>
+      </div>
+      <div class="table-card">
+        <div class="table-card-header"><span class="table-card-title">Top Products</span></div>
+        <ul class="top-products-list" id="topProductsList"><li class="loading">Loading...</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDERS -->
+  <div class="page" id="page-orders">
+    <div class="page-header">
+      <h1 class="page-title">All <em>Orders</em></h1>
+      <p class="page-sub">Manage and update customer orders</p>
+    </div>
+    <div class="table-card">
+      <div class="table-card-header">
+        <span class="table-card-title">Orders List</span>
+        <div style="display:flex;gap:0.5rem;align-items:center;">
+          <select class="status-select" onchange="loadOrders(this.value)" id="orderStatusFilter">
+            <option value="">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="processing">Processing</option>
+            <option value="shipped">Shipped</option>
+            <option value="delivered">Delivered</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>ID</th><th>Customer</th><th>Phone</th><th>City</th><th>Amount</th><th>Payment</th><th>Status</th><th>Date</th><th>Action</th></tr></thead>
+        <tbody id="ordersTable"><tr><td colspan="9" class="loading">Loading...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div class="page" id="page-products">
+    <div class="page-header">
+      <h1 class="page-title">All <em>Products</em></h1>
+      <p class="page-sub">Manage your product catalog</p>
+    </div>
+    <div class="table-card">
+      <div class="table-card-header"><span class="table-card-title">Products List</span></div>
+      <table>
+        <thead><tr><th>ID</th><th>Name</th><th>Category</th><th>Price</th><th>Sale Price</th><th>Stock</th><th>Badge</th><th>Status</th></tr></thead>
+        <tbody id="productsTable"><tr><td colspan="8" class="loading">Loading...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CUSTOMERS -->
+  <div class="page" id="page-customers">
+    <div class="page-header">
+      <h1 class="page-title">All <em>Customers</em></h1>
+      <p class="page-sub">View registered customers and their order history</p>
+    </div>
+    <div class="table-card">
+      <div class="table-card-header">
+        <span class="table-card-title">Customers List</span>
+        <input class="search-input" placeholder="Search name, email, phone..." oninput="searchCustomers(this.value)" id="customerSearch">
+      </div>
+      <table>
+        <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>City</th><th>Orders</th><th>Total Spent</th><th>Joined</th></tr></thead>
+        <tbody id="customersTable"><tr><td colspan="8" class="loading">Loading...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- NEWSLETTER -->
+  <div class="page" id="page-newsletter">
+    <div class="page-header">
+      <h1 class="page-title">Newsletter <em>Subscribers</em></h1>
+      <p class="page-sub">All email subscribers</p>
+    </div>
+    <div class="table-card">
+      <div class="table-card-header"><span class="table-card-title">Subscribers List</span><span id="subCount" style="font-size:0.65rem;color:var(--mid);"></span></div>
+      <table>
+        <thead><tr><th>ID</th><th>Email</th><th>Status</th><th>Joined</th></tr></thead>
+        <tbody id="newsletterTable"><tr><td colspan="4" class="loading">Loading...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<div class="admin-notif" id="adminNotif"></div>
+
+<script>
+const API = 'http://localhost:5000/api';
+let adminToken = sessionStorage.getItem('maj_admin_token');
+let adminUser = JSON.parse(sessionStorage.getItem('maj_admin') || 'null');
+
+// ── LOGIN ──────────────────────────────────────────────────────
+async function adminLogin() {
+  const email = document.getElementById('adminEmail').value;
+  const password = document.getElementById('adminPassword').value;
+  const errEl = document.getElementById('loginErr');
+  try {
+    const res = await fetch(`${API}/auth/admin/login`, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (!res.ok) { errEl.textContent = data.error; errEl.classList.add('show'); return; }
+    adminToken = data.token;
+    adminUser = data.admin;
+    sessionStorage.setItem('maj_admin_token', adminToken);
+    sessionStorage.setItem('maj_admin', JSON.stringify(adminUser));
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('adminNameDisplay').textContent = adminUser.username;
+    loadDashboard();
+  } catch(e) {
+    errEl.textContent = 'Cannot connect to backend. Make sure npm run dev is running.';
+    errEl.classList.add('show');
+  }
+}
+
+function adminLogout() {
+  sessionStorage.clear();
+  location.reload();
+}
+
+// Check if already logged in
+if (adminToken) {
+  document.getElementById('loginScreen').classList.add('hidden');
+  if (adminUser) document.getElementById('adminNameDisplay').textContent = adminUser.username;
+  loadDashboard();
+}
+
+// ── NAVIGATION ─────────────────────────────────────────────────
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(`page-${page}`).classList.add('active');
+  event.currentTarget.classList.add('active');
+
+  if (page === 'dashboard') loadDashboard();
+  else if (page === 'orders') loadOrders();
+  else if (page === 'products') loadProducts();
+  else if (page === 'customers') loadCustomers();
+  else if (page === 'newsletter') loadNewsletter();
+}
+
+// ── HELPERS ────────────────────────────────────────────────────
+function notify(msg) {
+  const el = document.getElementById('adminNotif');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+function formatDate(str) {
+  if (!str) return '—';
+  return new Date(str).toLocaleDateString('en-PK', { day:'2-digit', month:'short', year:'numeric' });
+}
+
+function statusBadge(status) {
+  return `<span class="badge badge-${status}">${status}</span>`;
+}
+
+async function authFetch(url, options = {}) {
+  return fetch(url, { ...options, headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}`, ...(options.headers || {}) } });
+}
+
+// ── DASHBOARD ──────────────────────────────────────────────────
+async function loadDashboard() {
+  document.getElementById('dashDate').textContent = new Date().toLocaleDateString('en-PK', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  try {
+    const res = await authFetch(`${API}/admin/dashboard`);
+    const d = await res.json();
+    document.getElementById('statRevenue').textContent = '₨' + (d.total_revenue || 0).toLocaleString();
+    document.getElementById('statOrders').textContent = d.total_orders || 0;
+    document.getElementById('statCustomers').textContent = d.total_customers || 0;
+    document.getElementById('statPending').textContent = d.pending_orders || 0;
+
+    // Recent orders
+    const tbody = document.getElementById('recentOrdersTable');
+    if (!d.recent_orders || d.recent_orders.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--mid);padding:2rem;font-size:0.7rem;">No orders yet</td></tr>`;
+    } else {
+      tbody.innerHTML = d.recent_orders.map(o => `
+        <tr>
+          <td><strong>#${o.id}</strong></td>
+          <td>${o.customer_name || '—'}</td>
+          <td>₨${(o.total_amount||0).toLocaleString()}</td>
+          <td>${statusBadge(o.status)}</td>
+        </tr>
+      `).join('');
+    }
+
+    // Top products
+    const list = document.getElementById('topProductsList');
+    if (!d.top_products || d.top_products.length === 0) {
+      list.innerHTML = `<li style="text-align:center;color:var(--mid);padding:2rem;font-size:0.7rem;">No sales data yet</li>`;
+    } else {
+      list.innerHTML = d.top_products.map((p, i) => `
+        <li class="top-product-item">
+          <div class="top-product-rank">${i+1}</div>
+          <div class="top-product-info">
+            <div class="top-product-name">${p.name}</div>
+            <div class="top-product-cat">${p.category}</div>
+          </div>
+          <div class="top-product-stats">
+            <div class="top-product-revenue">₨${(p.revenue||0).toLocaleString()}</div>
+            <div class="top-product-units">${p.units_sold} units</div>
+          </div>
+        </li>
+      `).join('');
+    }
+  } catch(e) { notify('Could not load dashboard data'); }
+}
+
+// ── ORDERS ─────────────────────────────────────────────────────
+async function loadOrders(status = '') {
+  const url = status ? `${API}/orders?status=${status}&limit=50` : `${API}/orders?limit=50`;
+  try {
+    const res = await authFetch(url);
+    const data = await res.json();
+    const tbody = document.getElementById('ordersTable');
+    if (!data.orders || data.orders.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;color:var(--mid);padding:2rem;font-size:0.7rem;">No orders found</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = data.orders.map(o => `
+      <tr>
+        <td><strong>#${o.id}</strong></td>
+        <td>${o.customer_name || '—'}</td>
+        <td>${o.customer_phone || '—'}</td>
+        <td>${o.shipping_city || '—'}</td>
+        <td>₨${(o.total_amount||0).toLocaleString()}</td>
+        <td><span class="badge badge-${o.payment_status}">${o.payment_status}</span></td>
+        <td>
+          <select class="status-select" onchange="updateOrderStatus(${o.id}, this.value)">
+            ${['pending','confirmed','processing','shipped','delivered','cancelled'].map(s =>
+              `<option value="${s}" ${s===o.status?'selected':''}>${s}</option>`
+            ).join('')}
+          </select>
+        </td>
+        <td>${formatDate(o.created_at)}</td>
+        <td>
+          <button class="btn btn-outline" onclick="markPaid(${o.id})">Mark Paid</button>
+        </td>
+      </tr>
+    `).join('');
+  } catch(e) { notify('Could not load orders'); }
+}
+
+async function updateOrderStatus(id, status) {
+  try {
+    await authFetch(`${API}/orders/${id}/status`, { method: 'PUT', body: JSON.stringify({ status }) });
+    notify(`Order #${id} → ${status}`);
+  } catch(e) { notify('Could not update order'); }
+}
+
+async function markPaid(id) {
+  try {
+    await authFetch(`${API}/orders/${id}/status`, { method: 'PUT', body: JSON.stringify({ payment_status: 'paid' }) });
+    notify(`Order #${id} marked as paid`);
+    loadOrders(document.getElementById('orderStatusFilter').value);
+  } catch(e) { notify('Could not update payment'); }
+}
+
+// ── PRODUCTS ───────────────────────────────────────────────────
+async function loadProducts() {
+  try {
+    const res = await authFetch(`${API}/products`);
+    const data = await res.json();
+    const tbody = document.getElementById('productsTable');
+    tbody.innerHTML = data.products.map(p => `
+      <tr>
+        <td>${p.id}</td>
+        <td><strong>${p.name}</strong></td>
+        <td>${p.category}</td>
+        <td>₨${p.price.toLocaleString()}</td>
+        <td>${p.orig_price ? '₨'+p.orig_price.toLocaleString() : '—'}</td>
+        <td>${p.stock}</td>
+        <td>${p.badge ? `<span class="badge badge-${p.badge.toLowerCase()}">${p.badge}</span>` : '—'}</td>
+        <td><span class="badge ${p.is_active ? 'badge-processing' : 'badge-cancelled'}">${p.is_active ? 'Active' : 'Hidden'}</span></td>
+      </tr>
+    `).join('');
+  } catch(e) { notify('Could not load products'); }
+}
+
+// ── CUSTOMERS ──────────────────────────────────────────────────
+let allCustomers = [];
+async function loadCustomers(search = '') {
+  try {
+    const url = search ? `${API}/customers?search=${encodeURIComponent(search)}` : `${API}/customers?limit=100`;
+    const res = await authFetch(url);
+    const data = await res.json();
+    allCustomers = data.customers || [];
+    renderCustomers(allCustomers);
+  } catch(e) { notify('Could not load customers'); }
+}
+
+function renderCustomers(customers) {
+  const tbody = document.getElementById('customersTable');
+  if (customers.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:var(--mid);padding:2rem;font-size:0.7rem;">No customers found</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = customers.map(c => `
+    <tr>
+      <td>${c.id}</td>
+      <td><strong>${c.name}</strong></td>
+      <td>${c.email}</td>
+      <td>${c.phone || '—'}</td>
+      <td>${c.city || '—'}</td>
+      <td>${c.total_orders || 0}</td>
+      <td>₨${(c.total_spent || 0).toLocaleString()}</td>
+      <td>${formatDate(c.created_at)}</td>
+    </tr>
+  `).join('');
+}
+
+function searchCustomers(val) {
+  clearTimeout(window._searchTimer);
+  window._searchTimer = setTimeout(() => loadCustomers(val), 400);
+}
+
+// ── NEWSLETTER ─────────────────────────────────────────────────
+async function loadNewsletter() {
+  try {
+    const res = await authFetch(`${API}/newsletter`);
+    const data = await res.json();
+    document.getElementById('subCount').textContent = `${data.total} subscribers`;
+    const tbody = document.getElementById('newsletterTable');
+    if (data.subscribers.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--mid);padding:2rem;font-size:0.7rem;">No subscribers yet</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = data.subscribers.map(s => `
+      <tr>
+        <td>${s.id}</td>
+        <td>${s.email}</td>
+        <td><span class="badge badge-processing">Active</span></td>
+        <td>${formatDate(s.joined_at)}</td>
+      </tr>
+    `).join('');
+  } catch(e) { notify('Could not load subscribers'); }
+}
+</script>
+</body>
+</html>
