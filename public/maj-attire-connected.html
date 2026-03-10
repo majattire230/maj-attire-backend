@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>M.A.J Attire — Elevated Fashion</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -89,7 +89,8 @@
   /* NAVBAR */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-    padding: 1rem 1.2rem;
+    padding: 1.5rem 4rem;
+    padding-top: max(1.5rem, env(safe-area-inset-top));
     display: flex; align-items: center; justify-content: space-between;
     background: transparent;
     transition: background 0.4s, padding 0.4s, backdrop-filter 0.4s;
@@ -98,6 +99,7 @@
     background: rgba(10,10,10,0.92);
     backdrop-filter: blur(20px);
     padding: 1rem 4rem;
+    padding-top: max(1rem, env(safe-area-inset-top));
   }
   .nav-logo {
     font-family: 'Cormorant Garamond', serif;
@@ -1051,8 +1053,8 @@
 
   /* TABLET — 768px to 1024px */
   @media (max-width: 1024px) {
-    nav { padding: 1.2rem 2rem; }
-    nav.scrolled { padding: 0.8rem 2rem; }
+    nav { padding: 1.2rem 1.5rem; }
+    nav.scrolled { padding: 0.8rem 1.5rem; }
     section { padding: 6rem 2rem; }
     #categories { padding: 6rem 2rem; }
     .categories-grid { grid-template-columns: 1fr 1fr; }
@@ -1074,8 +1076,9 @@
     * { cursor: auto !important; }
 
     /* Navbar */
-    nav { padding: 1rem 1.2rem; }
-    nav.scrolled { padding: 0.8rem 1.2rem; }
+    nav { padding: 0.8rem 1rem; }
+    nav.scrolled { padding: 0.6rem 1rem; }
+    .nav-logo { font-size: 1.3rem; letter-spacing: 0.1em; }
     .nav-links { display: none; }
     .hamburger { display: flex; }
     .mobile-menu { display: flex; }
@@ -1281,33 +1284,33 @@
         <span class="cat-arrow">Explore →</span>
       </div>
     </div>
-    <div class="cat-card" onclick="filterProducts('Women')">
+    <div class="cat-card" onclick="filterProducts('Summers')">
       <div class="cat-bg pattern-dots"></div>
       <div class="cat-pattern"></div>
-      <div class="cat-icon">👗</div>
+      <div class="cat-icon">☀️</div>
       <div class="cat-label-wrap">
-        <p class="cat-eyebrow">Grace & Power</p>
-        <h3 class="cat-name">Women's</h3>
+        <p class="cat-eyebrow">Light & Breezy</p>
+        <h3 class="cat-name">Summers<br>Collection</h3>
         <span class="cat-arrow">Explore →</span>
       </div>
     </div>
-    <div class="cat-card" onclick="filterProducts('Accessories')">
+    <div class="cat-card" onclick="filterProducts('Winters')">
       <div class="cat-bg pattern-stripe"></div>
       <div class="cat-pattern"></div>
-      <div class="cat-icon">👜</div>
+      <div class="cat-icon">❄️</div>
       <div class="cat-label-wrap">
-        <p class="cat-eyebrow">Finishing Touch</p>
-        <h3 class="cat-name">Accessories</h3>
+        <p class="cat-eyebrow">Warm & Cozy</p>
+        <h3 class="cat-name">Winters<br>Collection</h3>
         <span class="cat-arrow">Explore →</span>
       </div>
     </div>
-    <div class="cat-card" onclick="filterProducts('Ethnic')">
+    <div class="cat-card" onclick="filterProducts('Traditional')">
       <div class="cat-bg pattern-diamond"></div>
       <div class="cat-pattern"></div>
-      <div class="cat-icon">✨</div>
+      <div class="cat-icon">🪡</div>
       <div class="cat-label-wrap">
-        <p class="cat-eyebrow">Heritage Style</p>
-        <h3 class="cat-name">Ethnic Wear</h3>
+        <p class="cat-eyebrow">Cultural Pride</p>
+        <h3 class="cat-name">Traditional<br>Wear</h3>
         <span class="cat-arrow">Explore →</span>
       </div>
     </div>
@@ -1334,10 +1337,10 @@
     <div class="filter-tabs" id="filterTabs">
       <button class="filter-tab active" onclick="filterProducts('All', this)">All</button>
       <button class="filter-tab" onclick="filterProducts('Men', this)">Men</button>
-      <button class="filter-tab" onclick="filterProducts('Women', this)">Women</button>
-      <button class="filter-tab" onclick="filterProducts('Ethnic', this)">Ethnic</button>
+      <button class="filter-tab" onclick="filterProducts('Summers', this)">Summers</button>
+      <button class="filter-tab" onclick="filterProducts('Winters', this)">Winters</button>
+      <button class="filter-tab" onclick="filterProducts('Traditional', this)">Traditional</button>
       <button class="filter-tab" onclick="filterProducts('Streetwear', this)">Streetwear</button>
-      <button class="filter-tab" onclick="filterProducts('Accessories', this)">Accessories</button>
     </div>
   </div>
   <div class="products-grid" id="productsGrid"></div>
