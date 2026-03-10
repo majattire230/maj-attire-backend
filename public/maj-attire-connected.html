@@ -56,7 +56,7 @@
   #loader {
     position: fixed; inset: 0;
     background: var(--black);
-    display: flex; align-items: center; justify-content: center;
+    display: flex; align-items: right; justify-content: center;
     z-index: 10000;
     transition: opacity 0.8s ease, visibility 0.8s ease;
     pointer-events: none;
@@ -873,14 +873,17 @@
 
   /* NOTIFICATION */
   .notification {
-    position: fixed; top: 5rem; right: 2rem;
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
     background: var(--black);
     color: var(--white);
-    padding: 1rem 1.5rem;
-    font-size: 0.7rem; letter-spacing: 0.15em;
-    z-index: 3000;
+    padding: 0.9rem 1.5rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    z-index: 9998;
     transform: translateX(120%);
-    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    transition: transform 0.4s;
     border-left: 3px solid var(--gold);
   }
   .notification.show { transform: translateX(0); }
