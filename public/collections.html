@@ -306,9 +306,7 @@ function renderProducts(){
           ${p.orig_price?`<span class="price-original">₨${Number(p.orig_price).toLocaleString()}</span>`:''}
           <span class="${p.orig_price?'price-sale':'price-current'}">₨${Number(p.price).toLocaleString()}</span>
         </div>
-        <div class="product-colors">
-          ${(p.colors?JSON.parse(p.colors):[]).map(c=>`<div class="color-swatch" style="background:${c}"></div>`).join('')}
-        </div>
+
       </div>
     </div>`).join('');
 }
