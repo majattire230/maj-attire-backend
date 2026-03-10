@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Product — M.A.J Attire</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--black:#0a0a0a;--white:#f5f0eb;--cream:#ede8e0;--gold:#c9a96e;--charcoal:#2a2a2a;--mid:#6b6560;--accent:#8b3a3a}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Montserrat',sans-serif;background:var(--white);color:var(--black);overflow-x:hidden}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.2rem 4rem;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,10,0.96);backdrop-filter:blur(20px);border-bottom:1px solid rgba(201,169,110,0.1)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;letter-spacing:0.25em;color:var(--white);text-decoration:none}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{font-size:0.65rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:rgba(245,240,235,0.7);text-decoration:none;transition:color 0.3s}
+.nav-links a:hover{color:var(--gold)}
+.nav-actions{display:flex;align-items:center;gap:1rem}
+.nav-actions button{background:none;border:none;cursor:pointer;color:var(--white);font-size:1.1rem;opacity:0.8}
+.cart-btn{position:relative}
+.cart-count{position:absolute;top:-6px;right:-8px;background:var(--gold);color:var(--black);font-size:0.5rem;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(0);transition:all 0.3s}
+.cart-count.visible{opacity:1;transform:scale(1)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--white)}
+.mobile-menu{position:fixed;inset:0;background:var(--black);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;opacity:0;visibility:hidden;transition:all 0.4s}
+.mobile-menu.open{opacity:1;visibility:visible}
+.mobile-menu a{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--white);text-decoration:none}
+.mobile-menu a:hover{color:var(--gold)}
+.breadcrumb-bar{padding:6rem 4rem 0;background:var(--white)}
+.breadcrumb{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--mid);display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap}
+.breadcrumb a{color:var(--gold);text-decoration:none}
+.product-main{display:grid;grid-template-columns:1fr 1fr;gap:4rem;padding:2rem 4rem 4rem;max-width:1400px;margin:0 auto}
+.product-gallery{position:sticky;top:6rem;height:fit-content}
+.main-image{aspect-ratio:3/4;position:relative;overflow:hidden;background:var(--cream)}
+.main-img-bg{position:absolute;inset:0;transition:transform 0.6s ease}
+.main-image:hover .main-img-bg{transform:scale(1.03)}
+.product-badge-large{position:absolute;top:1.5rem;left:1.5rem;font-size:0.6rem;letter-spacing:0.2em;padding:0.4rem 1rem;z-index:2;text-transform:uppercase;font-weight:600}
+.badge-new{background:var(--black);color:var(--gold)}
+.badge-sale{background:var(--accent);color:var(--white)}
+.image-thumbnails{display:flex;gap:0.8rem;margin-top:1rem}
+.thumb{width:70px;height:90px;cursor:pointer;opacity:0.6;transition:opacity 0.3s;border:2px solid transparent;overflow:hidden;position:relative}
+.thumb.active,.thumb:hover{opacity:1;border-color:var(--gold)}
+.thumb-bg{position:absolute;inset:0}
+.product-info-panel{display:flex;flex-direction:column;gap:1.5rem}
+.product-cat-tag{font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold)}
+.product-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3vw,3rem);font-weight:300;line-height:1.1}
+.product-rating{display:flex;align-items:center;gap:0.8rem}
+.stars{color:var(--gold);font-size:0.9rem;letter-spacing:2px}
+.rating-count{font-size:0.65rem;color:var(--mid);letter-spacing:0.1em}
+.price-wrap{display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap}
+.price-main{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:400}
+.price-original-tag{font-size:1rem;color:var(--mid);text-decoration:line-through}
+.price-save{font-size:0.65rem;background:var(--accent);color:var(--white);padding:0.2rem 0.6rem;letter-spacing:0.1em;align-self:center}
+.divider{height:1px;background:rgba(10,10,10,0.1)}
+.product-desc{font-size:0.78rem;line-height:1.9;color:var(--mid)}
+.option-label{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--charcoal);display:flex;justify-content:space-between;align-items:center}
+.size-guide-link{color:var(--gold);cursor:pointer;text-decoration:underline;font-size:0.6rem}
+.size-grid{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:0.6rem}
+.size-btn{min-width:48px;padding:0.6rem 0.8rem;border:1px solid rgba(10,10,10,0.2);background:transparent;font-family:'Montserrat',sans-serif;font-size:0.6rem;letter-spacing:0.1em;cursor:pointer;transition:all 0.2s;color:var(--charcoal)}
+.size-btn:hover{border-color:var(--gold);color:var(--black)}
+.size-btn.selected{background:var(--black);color:var(--white);border-color:var(--black)}
+.action-btns{display:flex;flex-direction:column;gap:0.8rem}
+.add-to-bag-btn{width:100%;padding:1.1rem;background:var(--black);color:var(--white);border:none;font-family:'Montserrat',sans-serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:0.8rem}
+.add-to-bag-btn:hover,.add-to-bag-btn.added{background:var(--gold);color:var(--black)}
+.wishlist-action-btn{width:100%;padding:1rem;background:transparent;border:1px solid rgba(10,10,10,0.2);font-family:'Montserrat',sans-serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:0.6rem}
+.wishlist-action-btn:hover,.wishlist-action-btn.wishlisted{border-color:var(--gold);color:var(--gold)}
+.product-meta{display:flex;flex-direction:column;gap:0.8rem}
+.meta-item{display:flex;align-items:flex-start;gap:0.8rem;font-size:0.65rem;color:var(--mid)}
+.meta-icon{color:var(--gold);font-size:1rem;width:20px;flex-shrink:0}
+.meta-text strong{display:block;color:var(--black);letter-spacing:0.05em;margin-bottom:0.1rem}
+.accordion-item{border-bottom:1px solid rgba(10,10,10,0.1)}
+.accordion-header{padding:1rem 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--charcoal)}
+.accordion-header:hover{color:var(--gold)}
+.accordion-arrow{transition:transform 0.3s}
+.accordion-item.open .accordion-arrow{transform:rotate(180deg)}
+.accordion-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease}
+.accordion-item.open .accordion-body{max-height:300px}
+.accordion-content{padding:0 0 1.2rem;font-size:0.72rem;line-height:1.8;color:var(--mid)}
+/* PATTERNS */
+.pattern-weave{background-color:#1a1208;background-image:repeating-linear-gradient(45deg,rgba(201,169,110,0.08) 0,rgba(201,169,110,0.08) 2px,transparent 0,transparent 10px),repeating-linear-gradient(-45deg,rgba(201,169,110,0.08) 0,rgba(201,169,110,0.08) 2px,transparent 0,transparent 10px)}
+.pattern-dots{background-color:#0d0d0d;background-image:radial-gradient(rgba(201,169,110,0.2) 1px,transparent 1px);background-size:20px 20px}
+.pattern-stripe{background-color:#0a0a1a;background-image:repeating-linear-gradient(0deg,rgba(201,169,110,0.06) 0,rgba(201,169,110,0.06) 2px,transparent 0,transparent 20px)}
+.pattern-diamond{background-color:#1a1a0a;background-image:linear-gradient(45deg,rgba(201,169,110,0.08) 25%,transparent 25%,transparent 75%,rgba(201,169,110,0.08) 75%),linear-gradient(45deg,rgba(201,169,110,0.08) 25%,transparent 25%,transparent 75%,rgba(201,169,110,0.08) 75%);background-size:30px 30px;background-position:0 0,15px 15px}
+.pattern-cross{background-color:#1a1a0a;background-image:linear-gradient(rgba(201,169,110,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(201,169,110,0.06) 1px,transparent 1px);background-size:20px 20px}
+.pattern-herringbone{background-color:#0d0d1a;background-image:repeating-linear-gradient(45deg,rgba(201,169,110,0.07) 0,rgba(201,169,110,0.07) 2px,transparent 0,transparent 10px),repeating-linear-gradient(-45deg,rgba(201,169,110,0.07) 0,rgba(201,169,110,0.07) 2px,transparent 0,transparent 10px)}
+/* RELATED */
+.related-section{padding:4rem;background:var(--cream)}
+.section-label{font-size:0.6rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.5rem);font-weight:300;margin-bottom:2rem}
+.section-title em{font-style:italic;color:var(--gold)}
+.related-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+.related-card{cursor:pointer;background:var(--white)}
+.related-image{aspect-ratio:3/4;position:relative;overflow:hidden}
+.related-img-bg{position:absolute;inset:0;transition:transform 0.6s ease}
+.related-card:hover .related-img-bg{transform:scale(1.05)}
+.related-badge{position:absolute;top:0.8rem;left:0.8rem;font-size:0.5rem;letter-spacing:0.15em;padding:0.25rem 0.6rem;z-index:2;text-transform:uppercase;font-weight:600}
+.related-overlay{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;padding-bottom:1.2rem;background:rgba(10,10,10,0);transition:background 0.3s;z-index:3}
+.related-card:hover .related-overlay{background:rgba(10,10,10,0.25)}
+.related-quick-add{background:var(--white);color:var(--black);border:none;padding:0.6rem 1.2rem;font-family:'Montserrat',sans-serif;font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transform:translateY(8px);opacity:0;transition:all 0.3s}
+.related-card:hover .related-quick-add{transform:translateY(0);opacity:1}
+.related-wl{position:absolute;top:0.8rem;right:0.8rem;background:rgba(245,240,235,0.9);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;opacity:0;transition:all 0.3s;z-index:4}
+.related-card:hover .related-wl{opacity:1}
+.related-wl.active{background:var(--gold)}
+.related-info{padding:0.9rem 0.5rem}
+.related-cat{font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.3rem}
+.related-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;margin-bottom:0.3rem}
+.related-price{font-size:0.75rem;font-weight:500;display:flex;gap:0.5rem;align-items:center}
+.r-orig{text-decoration:line-through;color:var(--mid);font-size:0.65rem}
+.r-sale{color:var(--accent)}
+/* NOTIFICATION */
+.notification{position:fixed;top:5rem;right:2rem;background:var(--black);color:var(--white);padding:1rem 1.5rem;font-size:0.7rem;letter-spacing:0.15em;z-index:3000;transform:translateX(120%);transition:transform 0.4s;border-left:3px solid var(--gold);max-width:280px}
+.notification.show{transform:translateX(0)}
+/* CART */
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:2000;opacity:0;visibility:hidden;transition:all 0.3s}
+.cart-overlay.open{opacity:1;visibility:visible}
+.cart-drawer{position:fixed;top:0;right:0;bottom:0;width:400px;background:var(--white);z-index:2001;transform:translateX(100%);transition:transform 0.4s;display:flex;flex-direction:column}
+.cart-drawer.open{transform:translateX(0)}
+.cart-header{padding:2rem;border-bottom:1px solid rgba(10,10,10,0.1);display:flex;justify-content:space-between;align-items:center}
+.cart-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300}
+.cart-close{background:none;border:none;font-size:1.5rem;cursor:pointer}
+.cart-items{flex:1;overflow-y:auto;padding:1.5rem 2rem}
+.cart-empty{text-align:center;padding:3rem 0;color:var(--mid);font-size:0.8rem}
+.cart-empty-icon{font-size:2.5rem;margin-bottom:1rem}
+.cart-item{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid rgba(10,10,10,0.08)}
+.cart-item-img{width:70px;height:90px;flex-shrink:0;position:relative;overflow:hidden}
+.cart-item-info{flex:1}
+.cart-item-name{font-size:0.75rem;font-weight:500;margin-bottom:0.3rem}
+.cart-item-details{font-size:0.65rem;color:var(--mid);margin-bottom:0.5rem}
+.cart-item-price{font-size:0.75rem;font-weight:600}
+.cart-item-remove{background:none;border:none;color:var(--mid);cursor:pointer;font-size:0.8rem}
+.cart-footer{padding:1.5rem 2rem;border-top:1px solid rgba(10,10,10,0.1)}
+.cart-subtotal{display:flex;justify-content:space-between;margin-bottom:1rem;font-size:0.75rem}
+.checkout-btn{width:100%;padding:1rem;background:var(--black);color:var(--white);border:none;font-family:'Montserrat',sans-serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;margin-bottom:0.8rem;transition:background 0.3s}
+.checkout-btn:hover{background:var(--gold);color:var(--black)}
+.continue-btn{width:100%;padding:0.8rem;background:transparent;border:1px solid rgba(10,10,10,0.2);font-family:'Montserrat',sans-serif;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer}
+/* AUTH */
+.auth-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:5000;opacity:0;visibility:hidden;transition:all 0.3s;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
+.auth-overlay.open{opacity:1;visibility:visible}
+.auth-modal{background:var(--white);width:90%;max-width:440px;padding:3rem;position:relative}
+.auth-close{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer}
+.auth-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;margin-bottom:0.5rem}
+.auth-subtitle{font-size:0.65rem;letter-spacing:0.15em;color:var(--mid);margin-bottom:2rem}
+.auth-input-group{margin-bottom:1.2rem}
+.auth-input-group label{display:block;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem}
+.auth-input-group input{width:100%;padding:0.9rem 1rem;border:1px solid rgba(10,10,10,0.15);background:var(--cream);font-family:'Montserrat',sans-serif;font-size:0.8rem;outline:none;transition:border-color 0.3s}
+.auth-input-group input:focus{border-color:var(--gold)}
+.auth-submit-btn{width:100%;padding:1rem;background:var(--black);color:var(--white);border:none;font-family:'Montserrat',sans-serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;transition:background 0.3s}
+.auth-submit-btn:hover{background:var(--gold);color:var(--black)}
+.auth-switch{text-align:center;margin-top:1.5rem;font-size:0.65rem;color:var(--mid)}
+.auth-switch a{color:var(--gold);cursor:pointer;text-decoration:underline}
+.auth-error{font-size:0.65rem;color:#c0392b;margin-top:0.5rem;min-height:1rem}
+.checkout-form-modal{background:var(--white);width:90%;max-width:500px;padding:3rem;position:relative;max-height:90vh;overflow-y:auto}
+.checkout-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+/* RESPONSIVE */
+@media(max-width:1024px){nav{padding:1rem 2rem}.breadcrumb-bar{padding:5.5rem 2rem 0}.product-main{padding:2rem 2rem 4rem;gap:2rem}.related-section{padding:3rem 2rem}.related-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:768px){nav{padding:0.8rem 1rem}.nav-logo{font-size:1.3rem}.nav-links{display:none}.hamburger{display:flex}.breadcrumb-bar{padding:4.5rem 1rem 0}.product-main{grid-template-columns:1fr;padding:1.5rem 1rem 3rem;gap:1.5rem}.product-gallery{position:static}.related-section{padding:2rem 1rem}.related-grid{grid-template-columns:repeat(2,1fr);gap:1rem}.cart-drawer{width:100%}.auth-modal,.checkout-form-modal{padding:2rem 1.5rem}.checkout-row{grid-template-columns:1fr}.notification{right:1rem;left:1rem;top:4rem;transform:translateY(-120%)}.notification.show{transform:translateY(0)}.image-thumbnails{display:none}}
+@media(max-width:480px){.related-grid{grid-template-columns:repeat(2,1fr);gap:0.7rem}}
+</style>
+</head>
+<body>
+<div class="notification" id="notification"></div>
+
+<nav>
+  <a href="maj-attire-connected.html" class="nav-logo">M.A.J <span>Attire</span></a>
+  <ul class="nav-links">
+    <li><a href="maj-attire-connected.html">Home</a></li>
+    <li><a href="collections.html">Collections</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div id="navAuthArea"></div>
+    <button class="cart-btn" onclick="openCart()">🛍 <span class="cart-count" id="cartCount">0</span></button>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="maj-attire-connected.html" onclick="toggleMenu()">Home</a>
+  <a href="collections.html" onclick="toggleMenu()">Collections</a>
+  <a href="#" onclick="toggleMenu();openAuth();" style="color:var(--gold)">Sign In</a>
+</div>
+
+<div class="breadcrumb-bar">
+  <div class="breadcrumb">
+    <a href="maj-attire-connected.html">Home</a><span>›</span>
+    <a href="collections.html">Collections</a><span>›</span>
+    <span id="breadcrumbCat">...</span><span>›</span>
+    <span id="breadcrumbName">...</span>
+  </div>
+</div>
+
+<div class="product-main" id="productMain">
+  <div style="grid-column:1/-1;text-align:center;padding:6rem;color:var(--mid);font-size:0.75rem;letter-spacing:0.1em;">Loading...</div>
+</div>
+
+<section class="related-section" id="relatedSection" style="display:none">
+  <p class="section-label">You May Also Like</p>
+  <h2 class="section-title">Related <em>Pieces</em></h2>
+  <div class="related-grid" id="relatedGrid"></div>
+</section>
+
+<!-- CART -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header"><h3 class="cart-title">Your Bag</h3><button class="cart-close" onclick="closeCart()">×</button></div>
+  <div class="cart-items" id="cartItems"><div class="cart-empty"><div class="cart-empty-icon">🛍</div><p>Your bag is empty.</p></div></div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-subtotal"><span>Subtotal</span><span id="cartTotal">₨0</span></div>
+    <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+    <button class="continue-btn" onclick="closeCart()">Continue Shopping</button>
+  </div>
+</div>
+
+<!-- AUTH -->
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-modal">
+    <button class="auth-close" onclick="closeAuth()">×</button>
+    <div id="authLoginForm">
+      <h2 class="auth-title">Welcome Back</h2>
+      <p class="auth-subtitle">Sign in to your M.A.J Attire account</p>
+      <div class="auth-input-group"><label>Email</label><input type="email" id="loginEmail" placeholder="your@email.com"></div>
+      <div class="auth-input-group"><label>Password</label><input type="password" id="loginPassword" placeholder="••••••••"></div>
+      <p class="auth-error" id="loginError"></p>
+      <button class="auth-submit-btn" onclick="doLogin()">Sign In</button>
+      <p class="auth-switch">New here? <a onclick="showRegister()">Create account</a></p>
+    </div>
+    <div id="authRegisterForm" style="display:none">
+      <h2 class="auth-title">Join M.A.J Attire</h2>
+      <p class="auth-subtitle">Create your account</p>
+      <div class="auth-input-group"><label>Full Name</label><input type="text" id="regName" placeholder="Your Name"></div>
+      <div class="auth-input-group"><label>Email</label><input type="email" id="regEmail" placeholder="your@email.com"></div>
+      <div class="auth-input-group"><label>Password</label><input type="password" id="regPassword" placeholder="••••••••"></div>
+      <p class="auth-error" id="regError"></p>
+      <button class="auth-submit-btn" onclick="doRegister()">Create Account</button>
+      <p class="auth-switch">Have account? <a onclick="showLogin()">Sign in</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKOUT -->
+<div class="auth-overlay" id="checkoutOverlay">
+  <div class="checkout-form-modal">
+    <button class="auth-close" onclick="document.getElementById('checkoutOverlay').classList.remove('open')">×</button>
+    <h2 class="auth-title">Complete Order</h2>
+    <p class="auth-subtitle">Fill in your delivery details</p>
+    <div class="auth-input-group"><label>Full Name</label><input type="text" id="shipName" placeholder="Muhammad Ali"></div>
+    <div class="auth-input-group"><label>Phone</label><input type="tel" id="shipPhone" placeholder="0300-1234567"></div>
+    <div class="auth-input-group"><label>Address</label><input type="text" id="shipAddress" placeholder="House, Street, Area"></div>
+    <div class="checkout-row">
+      <div class="auth-input-group"><label>City</label><input type="text" id="shipCity" placeholder="Karachi"></div>
+      <div class="auth-input-group"><label>Payment</label>
+        <select id="paymentMethod" style="width:100%;padding:0.9rem 1rem;border:1px solid rgba(10,10,10,0.15);background:var(--cream);font-family:'Montserrat',sans-serif;font-size:0.8rem;outline:none">
+          <option value="COD">Cash on Delivery</option>
+          <option value="Bank">Bank Transfer</option>
+        </select>
+      </div>
+    </div>
+    <p class="auth-error" id="checkoutError"></p>
+    <button class="auth-submit-btn" onclick="submitOrder()">Place Order 🎉</button>
+  </div>
+</div>
+
+<script>
+const API='https://maj-attire-backend-production.up.railway.app/api';
+let currentProduct=null,allProducts=[],selectedSize=null;
+let cart=JSON.parse(localStorage.getItem('maj_cart')||'[]');
+let currentUser=JSON.parse(localStorage.getItem('maj_user')||'null');
+let authToken=localStorage.getItem('maj_token')||null;
+
+window.addEventListener('DOMContentLoaded',()=>{
+  const id=new URLSearchParams(window.location.search).get('id');
+  if(!id){window.location.href='collections.html';return;}
+  loadProduct(id);
+  updateCartCount();
+  updateNavAuth();
+});
+
+function toggleMenu(){
+  document.getElementById('mobileMenu').classList.toggle('open');
+  document.body.style.overflow=document.getElementById('mobileMenu').classList.contains('open')?'hidden':'';
+}
+
+async function loadProduct(id){
+  try{
+    const res=await fetch(`${API}/products`);
+    const data=await res.json();
+    allProducts=data.products||[];
+    currentProduct=allProducts.find(p=>p.id==id);
+    if(!currentProduct){window.location.href='collections.html';return;}
+    renderProduct();
+    renderRelated();
+    document.title=currentProduct.name+' — M.A.J Attire';
+  }catch(e){
+    document.getElementById('productMain').innerHTML='<div style="grid-column:1/-1;text-align:center;padding:6rem;color:var(--mid)">Could not load product.</div>';
+  }
+}
+
+function renderProduct(){
+  const p=currentProduct;
+  document.getElementById('breadcrumbCat').textContent=p.category;
+  document.getElementById('breadcrumbName').textContent=p.name;
+  const sizes=(()=>{try{return JSON.parse(p.sizes||'["S","M","L","XL"]');}catch(e){return["S","M","L","XL"];}})();
+  const isWl=isWishlisted(p.id);
+  const savings=p.orig_price?Math.round((1-p.price/p.orig_price)*100):0;
+  const thumbs=[p.pattern||'pattern-weave','pattern-dots','pattern-stripe'];
+
+  document.getElementById('productMain').innerHTML=`
+    <div class="product-gallery">
+      <div class="main-image">
+        <div class="main-img-bg ${p.pattern||'pattern-weave'}" id="mainImgBg"></div>
+        ${p.badge?`<span class="product-badge-large badge-${p.badge==='Sale'?'sale':'new'}">${p.badge}</span>`:''}
+      </div>
+      <div class="image-thumbnails">
+        ${thumbs.map((pat,i)=>`<div class="thumb ${i===0?'active':''}" onclick="switchThumb(this,'${pat}')"><div class="thumb-bg ${pat}"></div></div>`).join('')}
+      </div>
+    </div>
+    <div class="product-info-panel">
+      <p class="product-cat-tag">${p.category} Collection</p>
+      <h1 class="product-title">${p.name}</h1>
+      <div class="product-rating">
+        <span class="stars">★★★★★</span>
+        <span class="rating-count">${Math.floor(Math.random()*80+20)} reviews</span>
+      </div>
+      <div class="price-wrap">
+        ${p.orig_price?`<span class="price-original-tag">₨${Number(p.orig_price).toLocaleString()}</span>`:''}
+        <span class="price-main">₨${Number(p.price).toLocaleString()}</span>
+        ${savings>0?`<span class="price-save">SAVE ${savings}%</span>`:''}
+      </div>
+      <div class="divider"></div>
+      <p class="product-desc">${p.description||'Premium quality Pakistani fashion piece crafted with care and precision.'}</p>
+      <div>
+        <div class="option-label">
+          <span>Select Size</span>
+          <span class="size-guide-link" onclick="showNotification('S=36 | M=38 | L=40 | XL=42 | XXL=44')">Size Guide</span>
+        </div>
+        <div class="size-grid">${sizes.map(s=>`<button class="size-btn" onclick="selectSize('${s}',this)">${s}</button>`).join('')}</div>
+      </div>
+      <div class="action-btns">
+        <button class="add-to-bag-btn" id="addToBagBtn" onclick="addToBag()"><span>🛍</span> Add to Bag</button>
+        <button class="wishlist-action-btn ${isWl?'wishlisted':''}" id="wishlistBtn" onclick="toggleWishlist(${p.id})">
+          <span>${isWl?'♥':'♡'}</span> ${isWl?'Saved to Wishlist':'Save to Wishlist'}
+        </button>
+      </div>
+      <div class="product-meta">
+        <div class="meta-item"><span class="meta-icon">🚚</span><div class="meta-text"><strong>Free Delivery</strong>On orders above ₨2,000</div></div>
+        <div class="meta-item"><span class="meta-icon">↩️</span><div class="meta-text"><strong>Easy Returns</strong>30-day return policy</div></div>
+        <div class="meta-item"><span class="meta-icon">✨</span><div class="meta-text"><strong>Premium Quality</strong>Handcrafted by Pakistani artisans</div></div>
+        <div class="meta-item"><span class="meta-icon">📦</span><div class="meta-text"><strong>In Stock</strong>${p.stock||50} units available</div></div>
+      </div>
+      <div>
+        <div class="accordion-item" onclick="toggleAccordion(this)">
+          <div class="accordion-header">Product Details <span class="accordion-arrow">▾</span></div>
+          <div class="accordion-body"><div class="accordion-content">Premium fabric from Pakistan's finest mills. Hand-finished with attention to every detail. Machine washable 30°C. Iron on medium heat. Do not bleach.</div></div>
+        </div>
+        <div class="accordion-item" onclick="toggleAccordion(this)">
+          <div class="accordion-header">Sizing & Fit <span class="accordion-arrow">▾</span></div>
+          <div class="accordion-body"><div class="accordion-content">S: Chest 36" | M: Chest 38" | L: Chest 40" | XL: Chest 42" | XXL: Chest 44". Regular fit. If between sizes, go up one size.</div></div>
+        </div>
+        <div class="accordion-item" onclick="toggleAccordion(this)">
+          <div class="accordion-header">Shipping & Returns <span class="accordion-arrow">▾</span></div>
+          <div class="accordion-body"><div class="accordion-content">Standard delivery 3-5 days. Express 1-2 days (+₨200). Free returns within 30 days. Item must be unworn with original tags attached.</div></div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderRelated(){
+  const related=allProducts.filter(r=>r.id!==currentProduct.id&&r.category===currentProduct.category).slice(0,4);
+  if(!related.length)return;
+  document.getElementById('relatedSection').style.display='block';
+  document.getElementById('relatedGrid').innerHTML=related.map((r,i)=>`
+    <div class="related-card" style="animation:fadeUp 0.5s ease ${i*0.1}s both" onclick="goToProduct(${r.id})">
+      <div class="related-image">
+        <div class="related-img-bg ${r.pattern||'pattern-weave'}"></div>
+        ${r.badge?`<span class="related-badge" style="background:${r.badge==='Sale'?'var(--accent)':'var(--black)'};color:${r.badge==='Sale'?'#fff':'var(--gold)'}">${r.badge}</span>`:''}
+        <div class="related-overlay"><button class="related-quick-add" onclick="event.stopPropagation();quickAdd(${r.id})">Add to Bag</button></div>
+        <button class="related-wl ${isWishlisted(r.id)?'active':''}" onclick="event.stopPropagation();toggleWishlist(${r.id})" id="rwl-${r.id}">♡</button>
+      </div>
+      <div class="related-info">
+        <p class="related-cat">${r.category}</p>
+        <h3 class="related-name">${r.name}</h3>
+        <div class="related-price">
+          ${r.orig_price?`<span class="r-orig">₨${Number(r.orig_price).toLocaleString()}</span>`:''}
+          <span class="${r.orig_price?'r-sale':''}">₨${Number(r.price).toLocaleString()}</span>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function goToProduct(id){window.scrollTo(0,0);window.location.href='product.html?id='+id;}
+function switchThumb(el,pat){document.querySelectorAll('.thumb').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('mainImgBg').className='main-img-bg '+pat;}
+function selectSize(size,btn){document.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');selectedSize=size;}
+
+function addToBag(){
+  if(!selectedSize){showNotification('Please select a size first');return;}
+  const p=currentProduct;
+  const ex=cart.find(i=>i.id===p.id&&i.size===selectedSize);
+  if(ex)ex.qty++;
+  else cart.push({id:p.id,name:p.name,price:p.price,size:selectedSize,qty:1,pattern:p.pattern});
+  localStorage.setItem('maj_cart',JSON.stringify(cart));
+  updateCartCount();
+  const btn=document.getElementById('addToBagBtn');
+  btn.innerHTML='✓ Added to Bag!';btn.classList.add('added');
+  setTimeout(()=>{btn.innerHTML='<span>🛍</span> Add to Bag';btn.classList.remove('added');},2000);
+  showNotification(p.name+' ('+selectedSize+') added! ✨');
+}
+
+function quickAdd(id){
+  const p=allProducts.find(x=>x.id===id);if(!p)return;
+  const sizes=(()=>{try{return JSON.parse(p.sizes||'["M"]');}catch(e){return["M"];}})();
+  const ex=cart.find(i=>i.id===p.id&&i.size===sizes[0]);
+  if(ex)ex.qty++;
+  else cart.push({id:p.id,name:p.name,price:p.price,size:sizes[0],qty:1,pattern:p.pattern});
+  localStorage.setItem('maj_cart',JSON.stringify(cart));
+  updateCartCount();
+  showNotification(p.name+' added! ✨');
+}
+
+function toggleAccordion(item){
+  const was=item.classList.contains('open');
+  document.querySelectorAll('.accordion-item').forEach(i=>i.classList.remove('open'));
+  if(!was)item.classList.add('open');
+}
+
+function isWishlisted(id){return JSON.parse(localStorage.getItem('maj_wishlist')||'[]').includes(id);}
+
+async function toggleWishlist(id){
+  if(!authToken){showNotification('Please sign in to save items');openAuth();return;}
+  try{
+    await fetch(`${API}/wishlist/toggle`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+authToken},body:JSON.stringify({product_id:id})});
+    const wl=JSON.parse(localStorage.getItem('maj_wishlist')||'[]');
+    const idx=wl.indexOf(id);
+    if(idx>-1)wl.splice(idx,1);else wl.push(id);
+    localStorage.setItem('maj_wishlist',JSON.stringify(wl));
+    const btn=document.getElementById('wishlistBtn');
+    if(btn){const inWl=wl.includes(id);btn.classList.toggle('wishlisted',inWl);btn.innerHTML='<span>'+(inWl?'♥':'♡')+'</span> '+(inWl?'Saved to Wishlist':'Save to Wishlist');}
+    const rwl=document.getElementById('rwl-'+id);
+    if(rwl)rwl.classList.toggle('active',wl.includes(id));
+    showNotification(wl.includes(id)?'Added to wishlist ♥':'Removed from wishlist');
+  }catch(e){}
+}
+
+function updateCartCount(){const t=cart.reduce((s,i)=>s+i.qty,0);const el=document.getElementById('cartCount');el.textContent=t;el.classList.toggle('visible',t>0);}
+
+function openCart(){document.getElementById('cartOverlay').classList.add('open');document.getElementById('cartDrawer').classList.add('open');renderCartItems();document.body.style.overflow='hidden';}
+function closeCart(){document.getElementById('cartOverlay').classList.remove('open');document.getElementById('cartDrawer').classList.remove('open');document.body.style.overflow='';}
+
+function renderCartItems(){
+  const c=document.getElementById('cartItems'),f=document.getElementById('cartFooter');
+  if(!cart.length){c.innerHTML='<div class="cart-empty"><div class="cart-empty-icon">🛍</div><p>Your bag is empty.</p></div>';f.style.display='none';return;}
+  f.style.display='block';
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  c.innerHTML=cart.map(i=>`<div class="cart-item"><div class="cart-item-img"><div class="${i.pattern||'pattern-weave'}" style="position:absolute;inset:0"></div></div><div class="cart-item-info"><p class="cart-item-name">${i.name}</p><p class="cart-item-details">Size: ${i.size} · Qty: ${i.qty}</p><p class="cart-item-price">₨${(i.price*i.qty).toLocaleString()}</p></div><button class="cart-item-remove" onclick="removeFromCart(${i.id},'${i.size}')">✕</button></div>`).join('');
+  document.getElementById('cartTotal').textContent='₨'+total.toLocaleString();
+}
+
+function removeFromCart(id,size){cart=cart.filter(i=>!(i.id===id&&i.size===size));localStorage.setItem('maj_cart',JSON.stringify(cart));updateCartCount();renderCartItems();}
+
+function checkout(){
+  if(!currentUser){closeCart();openAuth();return;}
+  closeCart();
+  document.getElementById('checkoutOverlay').classList.add('open');
+  if(currentUser){document.getElementById('shipName').value=currentUser.name||'';document.getElementById('shipPhone').value=currentUser.phone||'';}
+}
+
+async function submitOrder(){
+  if(!authToken){showNotification('Please sign in first');return;}
+  const name=document.getElementById('shipName').value.trim(),phone=document.getElementById('shipPhone').value.trim(),address=document.getElementById('shipAddress').value.trim(),city=document.getElementById('shipCity').value.trim(),payment=document.getElementById('paymentMethod').value,errEl=document.getElementById('checkoutError');
+  if(!name||!phone||!address||!city){errEl.textContent='Please fill all fields';return;}
+  try{
+    const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+    const res=await fetch(`${API}/orders`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+authToken},body:JSON.stringify({items:cart,total_amount:total,shipping_name:name,shipping_phone:phone,shipping_address:address,shipping_city:city,payment_method:payment})});
+    const data=await res.json();
+    if(data.order||data.order_id){cart=[];localStorage.setItem('maj_cart',JSON.stringify(cart));updateCartCount();document.getElementById('checkoutOverlay').classList.remove('open');showNotification('Order placed! 🎉 We will contact you shortly.');}
+    else{errEl.textContent=data.message||'Error placing order';}
+  }catch(e){errEl.textContent='Server error. Please try again.';}
+}
+
+function updateNavAuth(){
+  const area=document.getElementById('navAuthArea');if(!area)return;
+  if(currentUser){area.innerHTML=`<div style="display:flex;align-items:center;gap:0.8rem"><span style="font-size:0.65rem;letter-spacing:0.1em;color:var(--white)">Hi, ${currentUser.name.split(' ')[0]}</span><button onclick="doLogout()" style="background:none;border:1px solid rgba(201,169,110,0.4);color:var(--gold);font-size:0.55rem;letter-spacing:0.15em;padding:0.3rem 0.7rem;cursor:pointer;font-family:'Montserrat',sans-serif">Logout</button></div>`;}
+  else{area.innerHTML=`<button onclick="openAuth()" style="background:none;border:1px solid rgba(201,169,110,0.5);color:var(--white);font-size:0.6rem;letter-spacing:0.2em;padding:0.5rem 1rem;cursor:pointer;font-family:'Montserrat',sans-serif">SIGN IN</button>`;}
+}
+
+function openAuth(){document.getElementById('authOverlay').classList.add('open');}
+function closeAuth(){document.getElementById('authOverlay').classList.remove('open');}
+function showRegister(){document.getElementById('authLoginForm').style.display='none';document.getElementById('authRegisterForm').style.display='block';}
+function showLogin(){document.getElementById('authLoginForm').style.display='block';document.getElementById('authRegisterForm').style.display='none';}
+
+async function doLogin(){
+  const email=document.getElementById('loginEmail').value.trim(),password=document.getElementById('loginPassword').value,errEl=document.getElementById('loginError');
+  if(!email||!password){errEl.textContent='Please fill all fields';return;}
+  try{const res=await fetch(`${API}/auth/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});const data=await res.json();if(!data.token){errEl.textContent=data.message||'Invalid credentials';return;}authToken=data.token;currentUser=data.customer;localStorage.setItem('maj_token',authToken);localStorage.setItem('maj_user',JSON.stringify(currentUser));closeAuth();updateNavAuth();showNotification('Welcome back, '+currentUser.name.split(' ')[0]+'! ✨');}catch(e){errEl.textContent='Server error';}
+}
+
+async function doRegister(){
+  const name=document.getElementById('regName').value.trim(),email=document.getElementById('regEmail').value.trim(),password=document.getElementById('regPassword').value,errEl=document.getElementById('regError');
+  if(!name||!email||!password){errEl.textContent='Please fill all fields';return;}
+  try{const res=await fetch(`${API}/auth/register`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,password})});const data=await res.json();if(!data.token){errEl.textContent=data.message||'Registration failed';return;}authToken=data.token;currentUser=data.customer;localStorage.setItem('maj_token',authToken);localStorage.setItem('maj_user',JSON.stringify(currentUser));closeAuth();updateNavAuth();showNotification('Welcome to M.A.J Attire! ✨');}catch(e){errEl.textContent='Server error';}
+}
+
+function doLogout(){authToken=null;currentUser=null;localStorage.removeItem('maj_token');localStorage.removeItem('maj_user');updateNavAuth();showNotification('Logged out successfully');}
+function showNotification(msg){const el=document.getElementById('notification');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),3000);}
+</script>
+</body>
+</html>

@@ -290,7 +290,7 @@ function renderProducts(){
   document.getElementById('resultsCount').textContent=filteredProducts.length+' products';
   if(filteredProducts.length===0){grid.innerHTML='<div class="loading-state">No products found.</div>';return;}
   grid.innerHTML=filteredProducts.map((p,i)=>`
-    <div class="product-card" style="animation-delay:${i*0.05}s" onclick="openModal(${p.id})">
+    <div class="product-card" style="animation-delay:${i*0.05}s" onclick="window.location.href='product.html?id='+${p.id}">
       <div class="product-image">
         <div class="product-img-bg ${p.pattern||'pattern-weave'}"></div>
         ${p.badge?`<span class="product-badge ${p.badge==='Sale'?'sale':'new'}">${p.badge}</span>`:''}
