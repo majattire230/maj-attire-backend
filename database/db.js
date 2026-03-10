@@ -121,40 +121,39 @@ function initDB() {
         created_at TEXT DEFAULT (datetime('now'))
       )
     `);
-
-    // ── SEED PRODUCTS ────────────────────────────────────────────
-    db.get("SELECT COUNT(*) as cnt FROM products", (err, row) => {
-      if (!err && row.cnt === 0) {
-        const products = [
-          [1, 'Obsidian Kurta', 'Men', 4500, null, 'A masterfully tailored dark kurta crafted from premium cotton-silk blend.', 'New', 'pattern-weave', '["#1a1a1a","#2d1208","#1a0a2d"]'],
-          [2, 'Ivory Silk Ensemble', 'Women', 7800, 9500, 'Flowing ivory ensemble in pure silk with hand-embroidered accents.', 'Sale', 'pattern-dots', '["#f5f0eb","#e8d5b0","#c9a96e"]'],
-          [3, 'Heritage Sherwani', 'Ethnic', 15000, null, 'A regal sherwani inspired by Mughal craftsmanship.', 'New', 'pattern-diamond', '["#1a0a2d","#2d1208","#0a1a0a"]'],
-          [4, 'Urban Varsity Jacket', 'Streetwear', 6200, null, 'A statement varsity jacket blending classic silhouette with contemporary details.', null, 'pattern-cross', '["#0a0a0a","#1a2d1a","#2d1a1a"]'],
-          [5, 'Gold-Thread Dupatta', 'Accessories', 2800, null, 'Luxurious dupatta woven with real gold-tone thread.', 'New', 'pattern-stripe', '["#c9a96e","#e8d5b0","#f5f0eb"]'],
-          [6, 'Midnight Lawn Suit', 'Women', 5400, 6800, 'Three-piece lawn suit in deep midnight hues with intricate digital print.', 'Sale', 'pattern-herringbone', '["#0a0a1a","#1a0a2d","#2d1a1a"]'],
-          [7, 'Classic Linen Shalwar', 'Men', 3200, null, 'Relaxed-fit shalwar kameez in premium linen.', null, 'pattern-dots', '["#e8d5b0","#f5f0eb","#1a1a1a"]'],
-          [8, 'Structured Bucket Hat', 'Streetwear', 1800, null, 'A structured bucket hat that blurs the line between luxury and streetwear.', 'New', 'pattern-weave', '["#0a0a0a","#c9a96e","#1a2d1a"]'],
-        ];
-        const stmt = db.prepare(`INSERT INTO products (id, name, category, price, orig_price, description, badge, pattern, colors) VALUES (?,?,?,?,?,?,?,?,?)`);
-        products.forEach(p => stmt.run(p));
-        stmt.finalize();
-        console.log('🌱 Products seeded successfully');
-      }
+function seedProducts() {
+  db.get('SELECT COUNT(*) as c FROM products', (err, row) => {
+    if (row && row.c > 0) return;
+    const products = [
+      ['Classic White Kurta','Men',2800,null,'New','Premium cotton kurta','["S","M","L","XL"]','[]','pattern-weave',50],
+      ['Navy Shalwar Kameez','Men',3500,4200,'Sale','Navy linen suit','["S","M","L","XL"]','[]','pattern-stripe',50],
+      ['Charcoal Waistcoat Set','Men',5500,null,'New','Three piece set','["M","L","XL","XXL"]','[]','pattern-weave',50],
+      ['Maroon Sherwani','Men',12000,15000,'Sale','Royal sherwani','["S","M","L","XL"]','[]','pattern-diamond',50],
+      ['Beige Cotton Kurta','Men',2200,null,null,'Casual kurta','["S","M","L","XL"]','[]','pattern-dots',50],
+      ['Floral Lawn Suit','Summers',2400,null,'New','Floral printed suit','["S","M","L","XL"]','[]','pattern-dots',50],
+      ['Sky Blue Chiffon Set','Summers',3200,null,'New','Elegant chiffon suit','["S","M","L","XL"]','[]','pattern-stripe',50],
+      ['Peach Organza Suit','Summers',4500,5200,'Sale','Delicate organza suit','["S","M","L","XL"]','[]','pattern-dots',50],
+      ['Lavender Lawn Set','Summers',3600,null,'New','Embroidered lawn','["S","M","L","XL"]','[]','pattern-diamond',50],
+      ['White Embroidered Pret','Summers',3900,4500,'Sale','Classic white pret','["S","M","L","XL"]','[]','pattern-stripe',50],
+      ['Camel Wool Shawl','Winters',4800,null,'New','Luxurious wool shawl','["One Size"]','[]','pattern-weave',50],
+      ['Maroon Velvet Suit','Winters',5500,null,'New','Rich velvet suit','["S","M","L","XL"]','[]','pattern-diamond',50],
+      ['Grey Wool Suit','Winters',6200,7500,'Sale','Premium wool suit','["S","M","L","XL"]','[]','pattern-herringbone',50],
+      ['Black Pashmina Shawl','Winters',8500,10000,'Sale','Authentic pashmina','["One Size"]','[]','pattern-dots',50],
+      ['Ivory Wool Suit','Winters',8900,null,'New','Embroidered wool suit','["S","M","L","XL"]','[]','pattern-cross',50],
+      ['Bridal Lehenga','Traditional',45000,null,'New','Heavy zardozi lehenga','["S","M","L","XL"]','[]','pattern-diamond',50],
+      ['Banarsi Silk Suit','Traditional',12000,15000,'Sale','Authentic Banarsi silk','["S","M","L","XL"]','[]','pattern-weave',50],
+      ['Anarkali Frock Set','Traditional',8500,null,'New','Flowing Anarkali frock','["S","M","L","XL"]','[]','pattern-dots',50],
+      ['Kashmiri Suit','Traditional',15000,null,'New','Hand embroidered suit','["S","M","L","XL"]','[]','pattern-cross',50],
+      ['Gharara Set','Traditional',14000,null,'New','Traditional gharara','["S","M","L","XL"]','[]','pattern-herringbone',50],
+      ['Graphic Oversized Tee','Streetwear',1500,null,'New','Urban graphic tee','["S","M","L","XL","XXL"]','[]','pattern-cross',50],
+      ['Hoodie Kurta Fusion','Streetwear',3200,null,'New','Hoodie kurta fusion','["S","M","L","XL"]','[]','pattern-stripe',50],
+      ['Cargo Shalwar','Streetwear',2800,3200,'Sale','Trendy cargo shalwar','["S","M","L","XL"]','[]','pattern-weave',50]
+    ];
+    products.forEach(p => {
+      db.run('INSERT INTO products (name,category,price,orig_price,badge,description,sizes,colors,pattern,stock,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,datetime("now"))', p);
     });
-
-    // ── SEED DEFAULT ADMIN ───────────────────────────────────────
-    db.get("SELECT COUNT(*) as cnt FROM admins", (err, row) => {
-      if (!err && row.cnt === 0) {
-        const hashed = bcrypt.hashSync('admin123', 10);
-        db.run(`INSERT INTO admins (username, email, password, role) VALUES (?, ?, ?, ?)`,
-          ['admin', 'admin@majattire.com', hashed, 'superadmin']);
-        console.log('👤 Default admin created — email: admin@majattire.com | pass: admin123');
-      }
-    });
-
-    console.log('📊 All database tables initialized');
+    console.log('Products seeded!');
   });
 }
 
-async function seedProducts() {
-  const count = await new Promise((res) => db.get('SELECT COUNT(*) as c FROM products', (e, r) ;
+module.exports = { db, initDB, seedProducts };
