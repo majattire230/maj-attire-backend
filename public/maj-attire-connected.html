@@ -59,8 +59,9 @@
     display: flex; align-items: center; justify-content: center;
     z-index: 10000;
     transition: opacity 0.8s ease, visibility 0.8s ease;
+    pointer-events: none;
   }
-  #loader.hidden { opacity: 0; visibility: hidden; }
+  #loader.hidden { opacity: 0; visibility: hidden; display: none; }
   .loader-text {
     font-family: 'Cormorant Garamond', serif;
     font-size: 4rem;
