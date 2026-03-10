@@ -268,14 +268,19 @@ async function loadProducts(category='All'){
   grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:4rem;color:var(--mid);font-size:0.75rem;letter-spacing:0.1em;">Loading...</div>';
   try{
     const url=category&&category!=='All'?`${API}/products?category=${encodeURIComponent(category)}`:`${API}/products`;
-    const res=await fetch(url);
+    const res=await fetch(url, {
+      method: 'GET',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      mode: 'cors'
+    });
     const data=await res.json();
-    allProducts=data.products||[];
+    allProducts=data.products||data||[];
     filteredProducts=[...allProducts];
     document.getElementById('resultsCount').textContent=filteredProducts.length+' products';
     renderProducts();
   }catch(e){
-    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:4rem;color:var(--mid);font-size:0.75rem;">Could not load products.</div>';
+    console.error('Load error:', e);
+    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:4rem;color:var(--mid);font-size:0.75rem;">Error: '+e.message+'</div>';
   }
 }
 
