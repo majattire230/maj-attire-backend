@@ -153,6 +153,54 @@ tr:hover td { background: rgba(201,169,110,0.03); }
 .loading { display: flex; align-items: center; justify-content: center; padding: 3rem; color: var(--mid); font-size: 0.7rem; letter-spacing: 0.2em; }
 
 @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+/* TABLET */
+@media (max-width: 1024px) {
+  .sidebar { width: 200px; }
+  .main { margin-left: 200px; padding: 1.5rem; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .grid-2 { grid-template-columns: 1fr; }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%; height: auto; min-height: unset;
+    position: relative; flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .sidebar-nav { display: none; width: 100%; padding: 0.5rem 0; }
+  .sidebar-nav.open { display: block; }
+  .sidebar-footer { display: none; }
+  .sidebar-logo {
+    flex: 1; padding: 1rem 1.2rem;
+    border-bottom: none;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .mobile-sidebar-toggle {
+    display: block;
+    background: none; border: 1px solid rgba(201,169,110,0.3);
+    color: var(--gold); font-size: 1.2rem;
+    padding: 0.3rem 0.7rem; cursor: pointer;
+  }
+  .main { margin-left: 0; padding: 1rem; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+  .grid-2 { grid-template-columns: 1fr; gap: 1rem; }
+  .stat-value { font-size: 1.6rem; }
+  table { font-size: 0.65rem; }
+  th, td { padding: 0.6rem 0.5rem; }
+  .table-card { padding: 1rem; overflow-x: auto; }
+  .table-card table { min-width: 600px; }
+  .page-title { font-size: 1.5rem; }
+  .login-box { width: 90%; padding: 2rem; }
+}
+
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+  .stat-card { padding: 1rem; }
+  .stat-value { font-size: 1.4rem; }
+  .stat-label { font-size: 0.55rem; }
+}
 </style>
 </head>
 <body>
@@ -179,8 +227,11 @@ tr:hover td { background: rgba(201,169,110,0.03); }
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sidebar-logo">
-    <div class="sidebar-logo-text">M.A.J <span>Attire</span></div>
-    <div class="sidebar-logo-sub">Admin Panel</div>
+    <div>
+      <div class="sidebar-logo-text">M.A.J <span>Attire</span></div>
+      <div class="sidebar-logo-sub">Admin Panel</div>
+    </div>
+    <button class="mobile-sidebar-toggle" onclick="toggleSidebar()" style="display:none" id="sidebarToggle">☰</button>
   </div>
   <nav class="sidebar-nav">
     <div class="nav-section">
@@ -312,7 +363,33 @@ tr:hover td { background: rgba(201,169,110,0.03); }
 <div class="admin-notif" id="adminNotif"></div>
 
 <script>
+// Mobile sidebar
+function toggleSidebar() {
+  document.querySelector('.sidebar-nav').classList.toggle('open');
+}
+// Show toggle on mobile
+if (window.innerWidth <= 768) {
+  document.getElementById('sidebarToggle').style.display = 'block';
+}
+window.addEventListener('resize', () => {
+  const toggle = document.getElementById('sidebarToggle');
+  if (toggle) toggle.style.display = window.innerWidth <= 768 ? 'block' : 'none';
+});
+
 const API = 'https://maj-attire-backend-production.up.railway.app/api';
+
+// Show hamburger on mobile
+if (window.innerWidth <= 768) {
+  document.getElementById('sidebarToggle').style.display = 'block';
+}
+window.addEventListener('resize', () => {
+  const btn = document.getElementById('sidebarToggle');
+  if (btn) btn.style.display = window.innerWidth <= 768 ? 'block' : 'none';
+});
+
+function toggleSidebar() {
+  document.querySelector('.sidebar-nav').classList.toggle('open');
+}
 let adminToken = sessionStorage.getItem('maj_admin_token');
 let adminUser = JSON.parse(sessionStorage.getItem('maj_admin') || 'null');
 

@@ -1012,23 +1012,163 @@
       repeating-linear-gradient(-45deg, rgba(201,169,110,0.07) 0, rgba(201,169,110,0.07) 2px, transparent 0, transparent 10px);
   }
 
-  /* Responsive */
-  @media (max-width: 900px) {
-    nav { padding: 1.2rem 1.5rem; }
-    nav.scrolled { padding: 0.8rem 1.5rem; }
-    .nav-links { display: none; }
-    section { padding: 5rem 1.5rem; }
-    #categories { padding: 5rem 1.5rem; }
+  /* HAMBURGER MENU */
+  .hamburger {
+    display: none;
+    flex-direction: column; gap: 5px;
+    cursor: pointer; padding: 5px;
+    background: none; border: none;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--white);
+    transition: all 0.3s ease;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--black);
+    z-index: 999;
+    flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 2.5rem;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.4s, visibility 0.4s;
+  }
+  .mobile-menu.open { opacity: 1; visibility: visible; }
+  .mobile-menu a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem; font-weight: 300;
+    color: var(--white); text-decoration: none;
+    letter-spacing: 0.1em;
+    transition: color 0.3s;
+  }
+  .mobile-menu a:hover { color: var(--gold); }
+
+  /* TABLET — 768px to 1024px */
+  @media (max-width: 1024px) {
+    nav { padding: 1.2rem 2rem; }
+    nav.scrolled { padding: 0.8rem 2rem; }
+    section { padding: 6rem 2rem; }
+    #categories { padding: 6rem 2rem; }
     .categories-grid { grid-template-columns: 1fr 1fr; }
-    .cat-card:first-child { grid-column: span 2; min-height: 350px; }
-    .products-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-    #promo { grid-template-columns: 1fr; gap: 3rem; }
-    .testimonials-grid { grid-template-columns: 1fr; }
-    .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
-    .cart-drawer { width: 100%; }
+    .cat-card:first-child { grid-column: span 2; min-height: 380px; }
+    .products-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    #promo { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 2rem; }
+    .promo-visual { height: 350px; }
+    .testimonials-grid { grid-template-columns: 1fr 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 3rem; }
     .modal { grid-template-columns: 1fr; }
     .modal-image { aspect-ratio: 4/3; }
-    .promo-stats { gap: 1.5rem; }
+  }
+
+  /* MOBILE — below 768px */
+  @media (max-width: 768px) {
+    /* Body */
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none; }
+    * { cursor: auto !important; }
+
+    /* Navbar */
+    nav { padding: 1rem 1.2rem; }
+    nav.scrolled { padding: 0.8rem 1.2rem; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .mobile-menu { display: flex; }
+    #navAuthArea { display: none !important; }
+
+    /* Hero */
+    #hero { height: 100svh; }
+    .hero-title { font-size: clamp(3.5rem, 15vw, 6rem); }
+    .hero-eyebrow { font-size: 0.55rem; letter-spacing: 0.3em; }
+    .hero-subtitle { font-size: 0.65rem; letter-spacing: 0.2em; margin-bottom: 2rem; }
+    .hero-cta { padding: 0.9rem 2rem; font-size: 0.65rem; }
+    .hero-floating { display: none; }
+    .hero-scroll { bottom: 1.5rem; }
+
+    /* Sections */
+    section { padding: 4rem 1.2rem; }
+    #categories { padding: 4rem 1.2rem; }
+    .section-title { font-size: clamp(2rem, 8vw, 3rem); }
+
+    /* Categories */
+    .categories-grid { grid-template-columns: 1fr; gap: 1px; }
+    .cat-card:first-child { grid-column: span 1; min-height: 280px; }
+    .cat-card:not(:first-child) { min-height: 200px; }
+    .cat-card:first-child .cat-name { font-size: 2rem; }
+    .cat-name { font-size: 1.5rem; }
+
+    /* Products */
+    #products { padding: 4rem 1rem; }
+    .products-header { flex-direction: column; align-items: flex-start; margin-bottom: 2rem; }
+    .filter-tabs { gap: 0.3rem; }
+    .filter-tab { padding: 0.4rem 0.9rem; font-size: 0.6rem; }
+    .products-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+    .product-info { padding: 0.8rem 0.8rem 1rem; }
+    .product-name { font-size: 1rem; }
+    .product-actions-overlay { opacity: 1; background: rgba(10,10,10,0.15); }
+    .quick-add { transform: translateY(0); padding: 0.6rem 1rem; font-size: 0.55rem; }
+    .wishlist-btn { opacity: 1; transform: translateX(0); }
+
+    /* Promo */
+    #promo { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 1.2rem; }
+    .promo-visual { height: 250px; }
+    .promo-stats { flex-wrap: wrap; gap: 1.5rem; }
+    .stat-num { font-size: 2rem; }
+
+    /* Testimonials */
+    .testimonials-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+    .testimonial-card { padding: 2rem 1.5rem; }
+    .testimonial-text { font-size: 1rem; }
+
+    /* Newsletter */
+    #newsletter { padding: 4rem 1.2rem; }
+    .newsletter-form { flex-direction: column; }
+    .newsletter-input { border-right: 1px solid rgba(201,169,110,0.3); border-bottom: none; }
+    .newsletter-desc br { display: none; }
+
+    /* Footer */
+    footer { padding: 3rem 1.2rem 2rem; }
+    .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .footer-brand { margin-bottom: 0.5rem; }
+    .footer-bottom { flex-direction: column; text-align: center; gap: 0.8rem; }
+    .footer-legal { gap: 1rem; flex-wrap: wrap; justify-content: center; }
+
+    /* Cart */
+    .cart-drawer { width: 100%; }
+    .cart-header { padding: 1.5rem; }
+    .cart-items { padding: 1rem 1.5rem; }
+    .cart-footer { padding: 1.5rem; }
+
+    /* Modal */
+    .modal { grid-template-columns: 1fr; width: 95%; max-height: 95vh; }
+    .modal-image { aspect-ratio: 3/2; }
+    .modal-info { padding: 1.5rem; }
+    .modal-name { font-size: 1.5rem; }
+
+    /* Auth modal */
+    .auth-modal { padding: 2rem 1.5rem; width: 95%; }
+    .checkout-form-modal { padding: 2rem 1.5rem; width: 95%; }
+    .checkout-row { grid-template-columns: 1fr; }
+
+    /* Notification */
+    .notification { right: 1rem; left: 1rem; top: 4rem; transform: translateY(-120%); }
+    .notification.show { transform: translateY(0); }
+
+    /* Marquee */
+    .marquee-item { font-size: 0.6rem; }
+  }
+
+  /* SMALL MOBILE — below 400px */
+  @media (max-width: 400px) {
+    .products-grid { grid-template-columns: 1fr; }
+    .hero-title { font-size: 3.5rem; }
+    .filter-tabs { gap: 0.2rem; }
+    .filter-tab { padding: 0.35rem 0.7rem; font-size: 0.55rem; }
   }
 </style>
 </head>
@@ -1063,15 +1203,26 @@
   </ul>
   <div class="nav-actions">
     <button onclick="openSearch()" title="Search">⌕</button>
-    <button class="cart-btn" onclick="openCart()" title="Cart">
-      ♡
-    </button>
+    <button class="cart-btn" onclick="openCart()" title="Wishlist">♡</button>
     <button class="cart-btn" onclick="openCart()" title="Cart">
       🛍
       <span class="cart-count" id="cartCount">0</span>
     </button>
+    <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()" title="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#categories" onclick="toggleMobileMenu()">Collections</a>
+  <a href="#products" onclick="toggleMobileMenu()">Shop</a>
+  <a href="#promo" onclick="toggleMobileMenu()">About</a>
+  <a href="#testimonials" onclick="toggleMobileMenu()">Reviews</a>
+  <a href="#newsletter" onclick="toggleMobileMenu()">Contact</a>
+  <a href="#" onclick="toggleMobileMenu(); openAuth();" style="color:var(--gold);font-size:1.2rem;font-family:'Montserrat',sans-serif;letter-spacing:0.3em;font-weight:300;">Sign In</a>
+</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -1595,6 +1746,15 @@ window.addEventListener('load', () => {
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
 });
+
+// ========== MOBILE MENU ==========
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const hamburger = document.getElementById('hamburger');
+  menu.classList.toggle('open');
+  hamburger.classList.toggle('open');
+  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+}
 
 // ========== AUTH SYSTEM ==========
 let currentUser = JSON.parse(localStorage.getItem('maj_user') || 'null');
