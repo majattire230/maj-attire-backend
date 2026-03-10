@@ -265,13 +265,20 @@ window.addEventListener('DOMContentLoaded',()=>{
 
 async function loadProducts(category='All'){
   const grid=document.getElementById('productsGrid');
-  grid.innerHTML='<div class="loading-state"><div class="loading-spinner"></div>Loading...</div>';
+  grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:4rem;color:var(--mid);font-size:0.75rem;letter-spacing:0.1em;">Loading...</div>';
   try{
-    const url=category&&category!=='All'?`${API}/products?category=${category}`:`${API}/products`;
-    const res=await fetch(url);const data=await res.json();
-    allProducts=data.products||[];filteredProducts=[...allProducts];applySort();
-  }catch(e){grid.innerHTML='<div class="loading-state">Could not load products. Please try again.</div>';}
+    const url=category&&category!=='All'?`${API}/products?category=${encodeURIComponent(category)}`:`${API}/products`;
+    const res=await fetch(url);
+    const data=await res.json();
+    allProducts=data.products||[];
+    filteredProducts=[...allProducts];
+    document.getElementById('resultsCount').textContent=filteredProducts.length+' products';
+    renderProducts();
+  }catch(e){
+    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:4rem;color:var(--mid);font-size:0.75rem;">Could not load products.</div>';
+  }
 }
+
 
 function renderProducts(){
   const grid=document.getElementById('productsGrid');
