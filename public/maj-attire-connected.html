@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>M.A.J Attire — Elevated Fashion</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -27,16 +27,6 @@
     color: var(--black);
     overflow-x: hidden;
     cursor: none;
-  }
-
-  /* Mobile status bar fix */
-  @supports (padding-top: env(safe-area-inset-top)) {
-    nav {
-      padding-top: calc(1.5rem + env(safe-area-inset-top));
-    }
-    nav.scrolled {
-      padding-top: calc(0.8rem + env(safe-area-inset-top));
-    }
   }
 
   /* CURSOR */
@@ -67,13 +57,10 @@
     position: fixed; inset: 0;
     background: var(--black);
     display: flex; align-items: center; justify-content: center;
-    z-index: 99999;
-    transition: opacity 0.6s ease;
+    z-index: 10000;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
   }
-  #loader.hidden { 
-    opacity: 0; 
-    pointer-events: none;
-  }
+  #loader.hidden { opacity: 0; visibility: hidden; }
   .loader-text {
     font-family: 'Cormorant Garamond', serif;
     font-size: 4rem;
@@ -102,20 +89,15 @@
   /* NAVBAR */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-    padding: 1rem 4rem;
-    padding-top: max(1rem, env(safe-area-inset-top));
+    padding: 1.5rem 4rem;
     display: flex; align-items: center; justify-content: space-between;
-    background: rgba(10,10,10,0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    transition: background 0.4s, padding 0.4s;
+    background: transparent;
+    transition: background 0.4s, padding 0.4s, backdrop-filter 0.4s;
   }
   nav.scrolled {
-    background: rgba(10,10,10,0.95);
+    background: rgba(10,10,10,0.92);
     backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    padding: 0.8rem 4rem;
-    padding-top: max(0.8rem, env(safe-area-inset-top));
+    padding: 1rem 4rem;
   }
   .nav-logo {
     font-family: 'Cormorant Garamond', serif;
@@ -177,7 +159,6 @@
   /* HERO */
   #hero {
     height: 100vh;
-    height: 100svh;
     position: relative;
     display: flex; align-items: center; justify-content: center;
     overflow: hidden;
@@ -450,13 +431,6 @@
   .product-card:nth-child(5){animation-delay:0.5s}
   .product-card:nth-child(6){animation-delay:0.6s}
   @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
-
-  .view-all-btn {
-    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold);
-    padding-bottom: 2px; transition: opacity 0.3s; white-space: nowrap;
-  }
-  .view-all-btn:hover { opacity: 0.7; }
 
   .product-image {
     position: relative;
@@ -896,19 +870,17 @@
 
   /* NOTIFICATION */
   .notification {
-    position: fixed; bottom: 2rem; right: 2rem;
-    background: var(--charcoal);
+    position: fixed; top: 5rem; right: 2rem;
+    background: var(--black);
     color: var(--white);
     padding: 1rem 1.5rem;
     font-size: 0.7rem; letter-spacing: 0.15em;
     z-index: 3000;
-    transform: translateY(150%);
+    transform: translateX(120%);
     transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
     border-left: 3px solid var(--gold);
-    max-width: 300px;
-    border-radius: 2px;
   }
-  .notification.show { transform: translateY(0); }
+  .notification.show { transform: translateX(0); }
 
   /* PRODUCT MODAL */
   .modal-overlay {
@@ -1040,165 +1012,25 @@
       repeating-linear-gradient(-45deg, rgba(201,169,110,0.07) 0, rgba(201,169,110,0.07) 2px, transparent 0, transparent 10px);
   }
 
-  /* HAMBURGER MENU */
-  .hamburger {
-    display: none;
-    flex-direction: column; gap: 5px;
-    cursor: pointer; padding: 5px;
-    background: none; border: none;
-  }
-  .hamburger span {
-    display: block; width: 24px; height: 2px;
-    background: var(--white);
-    transition: all 0.3s ease;
-  }
-  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .hamburger.open span:nth-child(2) { opacity: 0; }
-  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-  .mobile-menu {
-    display: none;
-    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: var(--black);
-    z-index: 999;
-    flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 2.5rem;
-    opacity: 0; visibility: hidden;
-    transition: opacity 0.4s, visibility 0.4s;
-  }
-  .mobile-menu.open { opacity: 1; visibility: visible; }
-  .mobile-menu a {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.5rem; font-weight: 300;
-    color: var(--white); text-decoration: none;
-    letter-spacing: 0.1em;
-    transition: color 0.3s;
-  }
-  .mobile-menu a:hover { color: var(--gold); }
-
-  /* TABLET — 768px to 1024px */
-  @media (max-width: 1024px) {
+  /* Responsive */
+  @media (max-width: 900px) {
     nav { padding: 1.2rem 1.5rem; }
     nav.scrolled { padding: 0.8rem 1.5rem; }
-    section { padding: 6rem 2rem; }
-    #categories { padding: 6rem 2rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 1.5rem; }
+    #categories { padding: 5rem 1.5rem; }
     .categories-grid { grid-template-columns: 1fr 1fr; }
-    .cat-card:first-child { grid-column: span 2; min-height: 380px; }
-    .products-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
-    #promo { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 2rem; }
-    .promo-visual { height: 350px; }
-    .testimonials-grid { grid-template-columns: 1fr 1fr; }
-    .footer-grid { grid-template-columns: 1fr 1fr; gap: 3rem; }
+    .cat-card:first-child { grid-column: span 2; min-height: 350px; }
+    .products-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    #promo { grid-template-columns: 1fr; gap: 3rem; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .cart-drawer { width: 100%; }
     .modal { grid-template-columns: 1fr; }
     .modal-image { aspect-ratio: 4/3; }
+    .promo-stats { gap: 1.5rem; }
   }
-
-  /* MOBILE — below 768px */
-  @media (max-width: 768px) {
-    /* Body */
-    body { cursor: auto; }
-    .cursor, .cursor-ring { display: none; }
-    * { cursor: auto !important; }
-
-    /* Navbar */
-    nav { padding: 0.8rem 1rem; }
-    nav.scrolled { padding: 0.6rem 1rem; }
-    .nav-logo { font-size: 1.3rem; letter-spacing: 0.1em; }
-    .nav-links { display: none; }
-    .hamburger { display: flex; }
-    .mobile-menu { display: flex; }
-    #navAuthArea { display: none !important; }
-
-    /* Hero */
-    #hero { height: 100svh; }
-    .hero-title { font-size: clamp(3.5rem, 15vw, 6rem); }
-    .hero-eyebrow { font-size: 0.55rem; letter-spacing: 0.3em; }
-    .hero-subtitle { font-size: 0.65rem; letter-spacing: 0.2em; margin-bottom: 2rem; }
-    .hero-cta { padding: 0.9rem 2rem; font-size: 0.65rem; }
-    .hero-floating { display: none; }
-    .hero-scroll { bottom: 1.5rem; }
-
-    /* Sections */
-    section { padding: 4rem 1.2rem; }
-    #categories { padding: 4rem 1.2rem; }
-    .section-title { font-size: clamp(2rem, 8vw, 3rem); }
-
-    /* Categories */
-    .categories-grid { grid-template-columns: 1fr; gap: 1px; }
-    .cat-card:first-child { grid-column: span 1; min-height: 280px; }
-    .cat-card:not(:first-child) { min-height: 200px; }
-    .cat-card:first-child .cat-name { font-size: 2rem; }
-    .cat-name { font-size: 1.5rem; }
-
-    /* Products */
-    #products { padding: 4rem 1rem; }
-    .products-header { flex-direction: column; align-items: flex-start; margin-bottom: 2rem; }
-    .filter-tabs { gap: 0.3rem; }
-    .filter-tab { padding: 0.4rem 0.9rem; font-size: 0.6rem; }
-    .products-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
-    .product-info { padding: 0.8rem 0.8rem 1rem; }
-    .product-name { font-size: 1rem; }
-    .product-actions-overlay { opacity: 1; background: rgba(10,10,10,0.15); }
-    .quick-add { transform: translateY(0); padding: 0.6rem 1rem; font-size: 0.55rem; }
-    .wishlist-btn { opacity: 1; transform: translateX(0); }
-
-    /* Promo */
-    #promo { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 1.2rem; }
-    .promo-visual { height: 250px; }
-    .promo-stats { flex-wrap: wrap; gap: 1.5rem; }
-    .stat-num { font-size: 2rem; }
-
-    /* Testimonials */
-    .testimonials-grid { grid-template-columns: 1fr; gap: 1.2rem; }
-    .testimonial-card { padding: 2rem 1.5rem; }
-    .testimonial-text { font-size: 1rem; }
-
-    /* Newsletter */
-    #newsletter { padding: 4rem 1.2rem; }
-    .newsletter-form { flex-direction: column; }
-    .newsletter-input { border-right: 1px solid rgba(201,169,110,0.3); border-bottom: none; }
-    .newsletter-desc br { display: none; }
-
-    /* Footer */
-    footer { padding: 3rem 1.2rem 2rem; }
-    .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
-    .footer-brand { margin-bottom: 0.5rem; }
-    .footer-bottom { flex-direction: column; text-align: center; gap: 0.8rem; }
-    .footer-legal { gap: 1rem; flex-wrap: wrap; justify-content: center; }
-
-    /* Cart */
-    .cart-drawer { width: 100%; }
-    .cart-header { padding: 1.5rem; }
-    .cart-items { padding: 1rem 1.5rem; }
-    .cart-footer { padding: 1.5rem; }
-
-    /* Modal */
-    .modal { grid-template-columns: 1fr; width: 95%; max-height: 95vh; }
-    .modal-image { aspect-ratio: 3/2; }
-    .modal-info { padding: 1.5rem; }
-    .modal-name { font-size: 1.5rem; }
-
-    /* Auth modal */
-    .auth-modal { padding: 2rem 1.5rem; width: 95%; }
-    .checkout-form-modal { padding: 2rem 1.5rem; width: 95%; }
-    .checkout-row { grid-template-columns: 1fr; }
-
-    /* Notification */
-    .notification { right: 1rem; left: 1rem; bottom: 1rem; max-width: 100%; transform: translateY(150%); }
-    .notification.show { transform: translateY(0); }
-
-    /* Marquee */
-    .marquee-item { font-size: 0.6rem; }
-  }
-
-  /* SMALL MOBILE — below 400px */
-  @media (max-width: 400px) {
-    .products-grid { grid-template-columns: 1fr; }
-    .hero-title { font-size: 3.5rem; }
-    .filter-tabs { gap: 0.2rem; }
-    .filter-tab { padding: 0.35rem 0.7rem; font-size: 0.55rem; }
-  }
+  #searchOverlay.open{opacity:1!important;visibility:visible!important}
 </style>
 </head>
 <body>
@@ -1232,25 +1064,27 @@
   </ul>
   <div class="nav-actions">
     <button onclick="openSearch()" title="Search">⌕</button>
-    <button class="cart-btn" onclick="openCart()" title="Wishlist">♡</button>
+    <button class="cart-btn" onclick="openCart()" title="Cart">
+      ♡
+    </button>
     <button class="cart-btn" onclick="openCart()" title="Cart">
       🛍
       <span class="cart-count" id="cartCount">0</span>
     </button>
-    <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()" title="Menu">
-      <span></span><span></span><span></span>
-    </button>
   </div>
 </nav>
 
-<!-- MOBILE MENU -->
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#categories" onclick="toggleMobileMenu()">Collections</a>
-  <a href="#products" onclick="toggleMobileMenu()">Shop</a>
-  <a href="#promo" onclick="toggleMobileMenu()">About</a>
-  <a href="#testimonials" onclick="toggleMobileMenu()">Reviews</a>
-  <a href="#newsletter" onclick="toggleMobileMenu()">Contact</a>
-  <a href="#" onclick="toggleMobileMenu(); openAuth();" style="color:var(--gold);font-size:1.2rem;font-family:'Montserrat',sans-serif;letter-spacing:0.3em;font-weight:300;">Sign In</a>
+<!-- SEARCH OVERLAY -->
+<div id="searchOverlay" style="position:fixed;inset:0;background:rgba(10,10,10,0.96);z-index:9000;opacity:0;visibility:hidden;transition:all 0.3s;display:flex;flex-direction:column;align-items:center;padding-top:6rem">
+  <div style="width:90%;max-width:650px">
+    <div style="display:flex;align-items:center;gap:1rem;border-bottom:1px solid rgba(201,169,110,0.4);padding-bottom:1rem;margin-bottom:2rem">
+      <span style="color:var(--gold);font-size:1.2rem">⌕</span>
+      <input id="globalSearchInput" type="text" placeholder="Search products, categories..." oninput="doGlobalSearch(this.value)" onkeydown="if(event.key==='Escape')closeSearch()" style="flex:1;background:none;border:none;outline:none;font-family:'Montserrat',sans-serif;font-size:1.1rem;color:var(--white);letter-spacing:0.05em;caret-color:var(--gold)">
+      <button onclick="closeSearch()" style="background:none;border:none;color:var(--mid);font-size:1.2rem;cursor:pointer;transition:color 0.2s" onmouseover="this.style.color='var(--white)'" onmouseout="this.style.color='var(--mid)'">✕</button>
+    </div>
+    <div id="searchResultsArea" style="max-height:60vh;overflow-y:auto;background:var(--white);border-radius:2px"></div>
+    <p style="text-align:center;margin-top:1.5rem;font-size:0.6rem;letter-spacing:0.2em;color:var(--mid);text-transform:uppercase">Press ESC to close · Enter to search all</p>
+  </div>
 </div>
 
 <!-- HERO -->
@@ -1300,7 +1134,7 @@
     <h2 class="section-title">Our <em>Collections</em></h2>
   </div>
   <div class="categories-grid">
-    <div class="cat-card" onclick="window.location='collections.html?cat=Men'">
+    <div class="cat-card" onclick="filterProducts('Men')">
       <div class="cat-bg pattern-weave"></div>
       <div class="cat-pattern"></div>
       <div class="cat-icon">👔</div>
@@ -1310,37 +1144,37 @@
         <span class="cat-arrow">Explore →</span>
       </div>
     </div>
-    <div class="cat-card" onclick="window.location='collections.html?cat=Summers'">
+    <div class="cat-card" onclick="filterProducts('Women')">
       <div class="cat-bg pattern-dots"></div>
       <div class="cat-pattern"></div>
-      <div class="cat-icon">☀️</div>
+      <div class="cat-icon">👗</div>
       <div class="cat-label-wrap">
-        <p class="cat-eyebrow">Light & Breezy</p>
-        <h3 class="cat-name">Summers<br>Collection</h3>
+        <p class="cat-eyebrow">Grace & Power</p>
+        <h3 class="cat-name">Women's</h3>
         <span class="cat-arrow">Explore →</span>
       </div>
     </div>
-    <div class="cat-card" onclick="window.location='collections.html?cat=Winters'">
+    <div class="cat-card" onclick="filterProducts('Accessories')">
       <div class="cat-bg pattern-stripe"></div>
       <div class="cat-pattern"></div>
-      <div class="cat-icon">❄️</div>
+      <div class="cat-icon">👜</div>
       <div class="cat-label-wrap">
-        <p class="cat-eyebrow">Warm & Cozy</p>
-        <h3 class="cat-name">Winters<br>Collection</h3>
+        <p class="cat-eyebrow">Finishing Touch</p>
+        <h3 class="cat-name">Accessories</h3>
         <span class="cat-arrow">Explore →</span>
       </div>
     </div>
-    <div class="cat-card" onclick="window.location='collections.html?cat=Traditional'">
+    <div class="cat-card" onclick="filterProducts('Ethnic')">
       <div class="cat-bg pattern-diamond"></div>
       <div class="cat-pattern"></div>
-      <div class="cat-icon">🪡</div>
+      <div class="cat-icon">✨</div>
       <div class="cat-label-wrap">
-        <p class="cat-eyebrow">Cultural Pride</p>
-        <h3 class="cat-name">Traditional<br>Wear</h3>
+        <p class="cat-eyebrow">Heritage Style</p>
+        <h3 class="cat-name">Ethnic Wear</h3>
         <span class="cat-arrow">Explore →</span>
       </div>
     </div>
-    <div class="cat-card" onclick="window.location='collections.html?cat=Streetwear'">
+    <div class="cat-card" onclick="filterProducts('Streetwear')">
       <div class="cat-bg pattern-cross"></div>
       <div class="cat-pattern"></div>
       <div class="cat-icon">🧢</div>
@@ -1353,19 +1187,23 @@
   </div>
 </section>
 
-<!-- PRODUCTS - TRENDING -->
+<!-- PRODUCTS -->
 <section id="products">
   <div class="products-header">
     <div>
-      <p class="section-label">Trending Now</p>
-      <h2 class="section-title">Top <em>Picks</em></h2>
+      <p class="section-label">Curated for You</p>
+      <h2 class="section-title">Featured <em>Pieces</em></h2>
     </div>
-    <a href="collections.html" class="view-all-btn">View All Collections →</a>
+    <div class="filter-tabs" id="filterTabs">
+      <button class="filter-tab active" onclick="filterProducts('All', this)">All</button>
+      <button class="filter-tab" onclick="filterProducts('Men', this)">Men</button>
+      <button class="filter-tab" onclick="filterProducts('Women', this)">Women</button>
+      <button class="filter-tab" onclick="filterProducts('Ethnic', this)">Ethnic</button>
+      <button class="filter-tab" onclick="filterProducts('Streetwear', this)">Streetwear</button>
+      <button class="filter-tab" onclick="filterProducts('Accessories', this)">Accessories</button>
+    </div>
   </div>
   <div class="products-grid" id="productsGrid"></div>
-  <div style="text-align:center; margin-top:3rem;">
-    <a href="collections.html" class="hero-cta" style="display:inline-block">Explore Full Collection →</a>
-  </div>
 </section>
 
 <!-- PROMO -->
@@ -1455,12 +1293,12 @@
     <div class="footer-col">
       <h4>Shop</h4>
       <ul class="footer-links">
-        <li><a href="collections.html">New Arrivals</a></li>
-        <li><a href="collections.html?cat=Men">Men's Collection</a></li>
-        <li><a href="collections.html?cat=Summers">Summers Collection</a></li>
-        <li><a href="collections.html?cat=Winters">Winters Collection</a></li>
-        <li><a href="collections.html?cat=Traditional">Traditional Wear</a></li>
-        <li><a href="collections.html?cat=Streetwear">Streetwear</a></li>
+        <li><a href="#">New Arrivals</a></li>
+        <li><a href="#">Men's Collection</a></li>
+        <li><a href="#">Women's Collection</a></li>
+        <li><a href="#">Ethnic Wear</a></li>
+        <li><a href="#">Accessories</a></li>
+        <li><a href="#">Sale</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -1538,218 +1376,7 @@
   </div>
 </div>
 
-<style>
-/* AUTH MODAL */
-.auth-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.8);
-  z-index: 5000; opacity: 0; visibility: hidden;
-  transition: opacity 0.3s, visibility 0.3s;
-  display: flex; align-items: center; justify-content: center;
-  backdrop-filter: blur(10px);
-}
-.auth-overlay.open { opacity: 1; visibility: visible; }
-.auth-modal {
-  background: var(--white);
-  width: 90%; max-width: 440px;
-  padding: 3rem;
-  position: relative;
-  animation: fadeUp 0.4s ease;
-}
-.auth-close {
-  position: absolute; top: 1.5rem; right: 1.5rem;
-  background: none; border: none; font-size: 1.5rem;
-  cursor: pointer; color: var(--mid);
-}
-.auth-logo {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.8rem; font-weight: 300;
-  letter-spacing: 0.2em; margin-bottom: 0.5rem;
-  color: var(--black);
-}
-.auth-logo span { color: var(--gold); }
-.auth-subtitle { font-size: 0.7rem; color: var(--mid); letter-spacing: 0.15em; margin-bottom: 2rem; }
-.auth-tabs { display: flex; gap: 0; margin-bottom: 2rem; border-bottom: 1px solid rgba(10,10,10,0.1); }
-.auth-tab {
-  flex: 1; padding: 0.8rem; background: none; border: none;
-  font-family: 'Montserrat', sans-serif; font-size: 0.65rem;
-  font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
-  cursor: pointer; color: var(--mid);
-  border-bottom: 2px solid transparent; margin-bottom: -1px;
-  transition: color 0.2s, border-color 0.2s;
-}
-.auth-tab.active { color: var(--black); border-bottom-color: var(--gold); }
-.auth-form { display: none; }
-.auth-form.active { display: block; }
-.auth-input-group { margin-bottom: 1.2rem; }
-.auth-input-group label {
-  display: block; font-size: 0.6rem; letter-spacing: 0.2em;
-  text-transform: uppercase; color: var(--mid); margin-bottom: 0.5rem;
-}
-.auth-input-group input {
-  width: 100%; padding: 0.9rem 1rem;
-  border: 1px solid rgba(10,10,10,0.15);
-  background: var(--cream);
-  font-family: 'Montserrat', sans-serif; font-size: 0.8rem;
-  outline: none; transition: border-color 0.2s;
-}
-.auth-input-group input:focus { border-color: var(--gold); }
-.auth-submit-btn {
-  width: 100%; padding: 1rem;
-  background: var(--black); color: var(--white);
-  border: none; font-family: 'Montserrat', sans-serif;
-  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.3em;
-  text-transform: uppercase; cursor: pointer;
-  transition: background 0.3s; margin-top: 0.5rem;
-}
-.auth-submit-btn:hover { background: var(--gold); color: var(--black); }
-.auth-error { color: var(--accent); font-size: 0.7rem; margin-bottom: 1rem; display: none; }
-.auth-error.show { display: block; }
-.auth-user-info {
-  display: flex; align-items: center; gap: 0.5rem;
-  color: var(--white); font-size: 0.65rem; letter-spacing: 0.1em;
-}
-.auth-user-name { opacity: 0.9; }
-.auth-logout-btn {
-  background: none; border: 1px solid rgba(201,169,110,0.4);
-  color: var(--gold); font-size: 0.55rem; letter-spacing: 0.15em;
-  padding: 0.3rem 0.7rem; cursor: pointer;
-  font-family: 'Montserrat', sans-serif;
-  transition: background 0.2s;
-}
-.auth-logout-btn:hover { background: var(--gold); color: var(--black); }
-
-/* CHECKOUT FORM */
-.checkout-form-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.85);
-  z-index: 5000; opacity: 0; visibility: hidden;
-  transition: opacity 0.3s, visibility 0.3s;
-  display: flex; align-items: center; justify-content: center;
-  backdrop-filter: blur(10px);
-}
-.checkout-form-overlay.open { opacity: 1; visibility: visible; }
-.checkout-form-modal {
-  background: var(--white);
-  width: 90%; max-width: 520px;
-  padding: 3rem; position: relative;
-  max-height: 90vh; overflow-y: auto;
-  animation: fadeUp 0.4s ease;
-}
-.checkout-form-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.8rem; font-weight: 300;
-  letter-spacing: 0.1em; margin-bottom: 0.3rem;
-}
-.checkout-form-sub { font-size: 0.65rem; color: var(--mid); letter-spacing: 0.1em; margin-bottom: 2rem; }
-.checkout-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-.checkout-order-summary {
-  background: var(--cream); padding: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-.checkout-order-summary h4 {
-  font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 1rem;
-}
-.checkout-item-row {
-  display: flex; justify-content: space-between;
-  font-size: 0.75rem; margin-bottom: 0.5rem; color: var(--charcoal);
-}
-.checkout-total-row {
-  display: flex; justify-content: space-between;
-  font-size: 0.85rem; font-weight: 600;
-  border-top: 1px solid rgba(10,10,10,0.1);
-  padding-top: 0.8rem; margin-top: 0.5rem;
-}
-</style>
-
-<!-- AUTH MODAL -->
-<div class="auth-overlay" id="authOverlay">
-  <div class="auth-modal">
-    <button class="auth-close" onclick="closeAuth()">×</button>
-    <div class="auth-logo">M.A.J <span>Attire</span></div>
-    <p class="auth-subtitle">Your account. Your style.</p>
-    <div class="auth-tabs">
-      <button class="auth-tab active" onclick="switchTab('login')">Sign In</button>
-      <button class="auth-tab" onclick="switchTab('register')">Register</button>
-    </div>
-    <!-- LOGIN FORM -->
-    <div class="auth-form active" id="loginForm">
-      <p class="auth-error" id="loginError"></p>
-      <div class="auth-input-group">
-        <label>Email Address</label>
-        <input type="email" id="loginEmail" placeholder="you@example.com">
-      </div>
-      <div class="auth-input-group">
-        <label>Password</label>
-        <input type="password" id="loginPassword" placeholder="••••••••">
-      </div>
-      <button class="auth-submit-btn" onclick="doLogin()">Sign In</button>
-    </div>
-    <!-- REGISTER FORM -->
-    <div class="auth-form" id="registerForm">
-      <p class="auth-error" id="registerError"></p>
-      <div class="auth-input-group">
-        <label>Full Name</label>
-        <input type="text" id="regName" placeholder="Ahmed Ali">
-      </div>
-      <div class="auth-input-group">
-        <label>Email Address</label>
-        <input type="email" id="regEmail" placeholder="you@example.com">
-      </div>
-      <div class="auth-input-group">
-        <label>Phone Number</label>
-        <input type="tel" id="regPhone" placeholder="0300-1234567">
-      </div>
-      <div class="auth-input-group">
-        <label>Password</label>
-        <input type="password" id="regPassword" placeholder="Min. 6 characters">
-      </div>
-      <button class="auth-submit-btn" onclick="doRegister()">Create Account</button>
-    </div>
-  </div>
-</div>
-
-<!-- CHECKOUT FORM MODAL -->
-<div class="checkout-form-overlay" id="checkoutFormOverlay">
-  <div class="checkout-form-modal">
-    <button class="auth-close" onclick="closeCheckoutForm()">×</button>
-    <h2 class="checkout-form-title">Complete Your Order</h2>
-    <p class="checkout-form-sub">Fill in your shipping details</p>
-    <div class="checkout-order-summary" id="checkoutSummary"></div>
-    <div class="auth-input-group">
-      <label>Full Name</label>
-      <input type="text" id="shipName" placeholder="Ahmed Ali">
-    </div>
-    <div class="auth-input-group">
-      <label>Phone Number</label>
-      <input type="tel" id="shipPhone" placeholder="0300-1234567">
-    </div>
-    <div class="auth-input-group">
-      <label>Delivery Address</label>
-      <input type="text" id="shipAddress" placeholder="House #, Street, Area">
-    </div>
-    <div class="checkout-row">
-      <div class="auth-input-group">
-        <label>City</label>
-        <input type="text" id="shipCity" placeholder="Karachi">
-      </div>
-      <div class="auth-input-group">
-        <label>Payment Method</label>
-        <select id="paymentMethod" style="width:100%;padding:0.9rem 1rem;border:1px solid rgba(10,10,10,0.15);background:var(--cream);font-family:'Montserrat',sans-serif;font-size:0.8rem;outline:none;">
-          <option value="COD">Cash on Delivery</option>
-          <option value="Bank">Bank Transfer</option>
-        </select>
-      </div>
-    </div>
-    <p class="auth-error" id="checkoutError"></p>
-    <button class="auth-submit-btn" onclick="submitOrder()">Place Order 🎉</button>
-  </div>
-</div>
-
 <script>
-const API = 'https://maj-attire-backend-production.up.railway.app/api';
-
 // ---- CURSOR ----
 const cursor = document.getElementById('cursor');
 const cursorRing = document.getElementById('cursorRing');
@@ -1761,183 +1388,80 @@ document.addEventListener('mousemove', e => {
     cursorRing.style.top = e.clientY + 'px';
   }, 80);
 });
+document.querySelectorAll('a, button, .cat-card, .product-card, .color-swatch, .size-btn').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2.5)'; cursorRing.style.width = '50px'; cursorRing.style.height = '50px'; });
+  el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.width = '36px'; cursorRing.style.height = '36px'; });
+});
 
 // ---- LOADER ----
 window.addEventListener('load', () => {
-  const loader = document.getElementById('loader');
   setTimeout(() => {
-    loader.classList.add('hidden');
-    setTimeout(() => loader.remove(), 700);
-  }, 1000);
+    document.getElementById('loader').classList.add('hidden');
+  }, 1800);
 });
 
 // ---- NAVBAR ----
 window.addEventListener('scroll', () => {
-  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+  const nav = document.getElementById('navbar');
+  nav.classList.toggle('scrolled', window.scrollY > 50);
 });
 
-// ========== MOBILE MENU ==========
-function toggleMobileMenu() {
-  const menu = document.getElementById('mobileMenu');
-  const hamburger = document.getElementById('hamburger');
-  menu.classList.toggle('open');
-  hamburger.classList.toggle('open');
-  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
-}
+// ---- PRODUCTS DATA ----
+const products = [
+  { id:1, name:'Obsidian Kurta', category:'Men', price:4500, badge:'New', colors:['#1a1a1a','#2d1208','#1a0a2d'], pattern:'pattern-weave', desc:'A masterfully tailored dark kurta crafted from premium cotton-silk blend. The subtle texture creates depth while maintaining a clean, contemporary silhouette perfect for evening events.' },
+  { id:2, name:'Ivory Silk Ensemble', category:'Women', price:7800, origPrice:9500, badge:'Sale', colors:['#f5f0eb','#e8d5b0','#c9a96e'], pattern:'pattern-dots', desc:'Flowing ivory ensemble in pure silk with hand-embroidered accents. This piece embodies understated luxury and is designed to drape beautifully on every figure.' },
+  { id:3, name:'Heritage Sherwani', category:'Ethnic', price:15000, badge:'New', colors:['#1a0a2d','#2d1208','#0a1a0a'], pattern:'pattern-diamond', desc:'A regal sherwani inspired by Mughal craftsmanship. Features intricate zari embroidery on the collar and cuffs, cut from rich brocade fabric with a structured, dignified fit.' },
+  { id:4, name:'Urban Varsity Jacket', category:'Streetwear', price:6200, colors:['#0a0a0a','#1a2d1a','#2d1a1a'], pattern:'pattern-cross', desc:'A statement varsity jacket blending classic silhouette with contemporary details. Chenille patches, ribbed trim, and premium wool-blend construction for the discerning streetwear enthusiast.' },
+  { id:5, name:'Gold-Thread Dupatta', category:'Accessories', price:2800, badge:'New', colors:['#c9a96e','#e8d5b0','#f5f0eb'], pattern:'pattern-stripe', desc:'Luxurious dupatta woven with real gold-tone thread in traditional motifs. A versatile piece that transforms any ensemble into an occasion-worthy outfit.' },
+  { id:6, name:'Midnight Lawn Suit', category:'Women', price:5400, origPrice:6800, badge:'Sale', colors:['#0a0a1a','#1a0a2d','#2d1a1a'], pattern:'pattern-herringbone', desc:'Three-piece lawn suit in deep midnight hues with intricate digital print. The coordinated dupatta and trouser complete a look that transitions effortlessly from day to dusk.' },
+  { id:7, name:'Classic Linen Shalwar', category:'Men', price:3200, colors:['#e8d5b0','#f5f0eb','#1a1a1a'], pattern:'pattern-dots', desc:'Relaxed-fit shalwar kameez in premium linen for those who appreciate casual refinement. Breathable, elegant, and perfect for both daily wear and informal gatherings.' },
+  { id:8, name:'Structured Bucket Hat', category:'Streetwear', price:1800, badge:'New', colors:['#0a0a0a','#c9a96e','#1a2d1a'], pattern:'pattern-weave', desc:'A structured bucket hat that blurs the line between luxury accessories and streetwear. Features embossed M.A.J logo badge and premium canvas construction.' },
+];
 
-// ========== AUTH SYSTEM ==========
-let currentUser = JSON.parse(localStorage.getItem('maj_user') || 'null');
-let authToken = localStorage.getItem('maj_token') || null;
-
-function updateNavAuth() {
-  const actions = document.querySelector('.nav-actions');
-  const existing = document.getElementById('navAuthArea');
-  if (existing) existing.remove();
-  const div = document.createElement('div');
-  div.id = 'navAuthArea';
-  div.style.cssText = 'display:flex;align-items:center;gap:0.8rem;';
-  if (currentUser) {
-    div.innerHTML = `
-      <div class="auth-user-info">
-        <span class="auth-user-name">Hi, ${currentUser.name.split(' ')[0]}</span>
-        <button class="auth-logout-btn" onclick="doLogout()">Logout</button>
-      </div>`;
-  } else {
-    div.innerHTML = `<button onclick="openAuth()" style="background:none;border:1px solid rgba(201,169,110,0.5);color:var(--white);font-size:0.6rem;letter-spacing:0.2em;padding:0.5rem 1rem;cursor:pointer;font-family:'Montserrat',sans-serif;transition:all 0.3s;" onmouseover="this.style.background='var(--gold)';this.style.color='var(--black)'" onmouseout="this.style.background='none';this.style.color='var(--white)'">SIGN IN</button>`;
-  }
-  actions.prepend(div);
-}
-
-function openAuth() {
-  document.getElementById('authOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeAuth() {
-  document.getElementById('authOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-function switchTab(tab) {
-  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (tab==='login'&&i===0)||(tab==='register'&&i===1)));
-  document.getElementById('loginForm').classList.toggle('active', tab === 'login');
-  document.getElementById('registerForm').classList.toggle('active', tab === 'register');
-}
-
-async function doLogin() {
-  const email = document.getElementById('loginEmail').value;
-  const password = document.getElementById('loginPassword').value;
-  const errEl = document.getElementById('loginError');
-  errEl.classList.remove('show');
-  if (!email || !password) { errEl.textContent = 'Please fill all fields'; errEl.classList.add('show'); return; }
-  try {
-    const res = await fetch(`${API}/auth/login`, {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ email, password })
-    });
-    const data = await res.json();
-    if (!res.ok) { errEl.textContent = data.error; errEl.classList.add('show'); return; }
-    authToken = data.token;
-    currentUser = data.customer;
-    localStorage.setItem('maj_token', authToken);
-    localStorage.setItem('maj_user', JSON.stringify(currentUser));
-    closeAuth();
-    updateNavAuth();
-    showNotification(`Welcome back, ${currentUser.name.split(' ')[0]}! 👋`);
-  } catch(e) { errEl.textContent = 'Server error. Is backend running?'; errEl.classList.add('show'); }
-}
-
-async function doRegister() {
-  const name = document.getElementById('regName').value;
-  const email = document.getElementById('regEmail').value;
-  const phone = document.getElementById('regPhone').value;
-  const password = document.getElementById('regPassword').value;
-  const errEl = document.getElementById('registerError');
-  errEl.classList.remove('show');
-  if (!name || !email || !password) { errEl.textContent = 'Name, email and password required'; errEl.classList.add('show'); return; }
-  try {
-    const res = await fetch(`${API}/auth/register`, {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ name, email, phone, password })
-    });
-    const data = await res.json();
-    if (!res.ok) { errEl.textContent = data.error; errEl.classList.add('show'); return; }
-    authToken = data.token;
-    currentUser = data.customer;
-    localStorage.setItem('maj_token', authToken);
-    localStorage.setItem('maj_user', JSON.stringify(currentUser));
-    closeAuth();
-    updateNavAuth();
-    showNotification(`Welcome to M.A.J Attire, ${currentUser.name.split(' ')[0]}! ✨`);
-  } catch(e) { errEl.textContent = 'Server error. Is backend running?'; errEl.classList.add('show'); }
-}
-
-function doLogout() {
-  authToken = null; currentUser = null;
-  localStorage.removeItem('maj_token');
-  localStorage.removeItem('maj_user');
-  updateNavAuth();
-  showNotification('Logged out successfully');
-}
-
-// ========== PRODUCTS (FROM API) ==========
-let products = [];
 let cart = [];
 let currentModalProduct = null;
 let currentSelectedSize = null;
 
-async function loadProducts(category = '') {
-  try {
-    // Home page: show only 8 trending (New badge) products
-    const url = `${API}/products?badge=New`;
-    const res = await fetch(url);
-    const data = await res.json();
-    products = (data.products || []).slice(0, 8);
-    renderProducts();
-  } catch(e) {
-    showNotification('Could not load products.');
-  }
-}
-
-function renderProducts() {
+// ---- RENDER PRODUCTS ----
+function renderProducts(filter = 'All') {
   const grid = document.getElementById('productsGrid');
-  if (products.length === 0) {
-    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:4rem;color:var(--mid);font-size:0.8rem;letter-spacing:0.1em;">No products found</div>`;
-    return;
-  }
-  grid.innerHTML = products.map((p, i) => `
+  const filtered = filter === 'All' ? products : products.filter(p => p.category === filter);
+  grid.innerHTML = filtered.map((p, i) => `
     <div class="product-card" style="animation-delay:${i * 0.1}s">
       <div class="product-image" onclick="openModal(${p.id})">
-        <div class="product-img-bg ${p.pattern || 'pattern-weave'}"></div>
+        <div class="product-img-bg ${p.pattern}"></div>
         ${p.badge ? `<span class="product-badge ${p.badge === 'Sale' ? 'sale' : 'new'}">${p.badge}</span>` : ''}
         <div class="product-actions-overlay">
           <button class="quick-add" onclick="event.stopPropagation(); addToCart(${p.id})">Add to Bag</button>
         </div>
-        <button class="wishlist-btn" onclick="event.stopPropagation(); toggleWishlist(${p.id})" id="wl-${p.id}">♡</button>
+        <button class="wishlist-btn" onclick="event.stopPropagation(); wishlist(${p.id})">♡</button>
       </div>
       <div class="product-info">
         <p class="product-category">${p.category}</p>
         <h3 class="product-name">${p.name}</h3>
         <div class="product-price">
-          ${p.orig_price ? `<span class="price-original">₨${p.orig_price.toLocaleString()}</span>` : ''}
-          <span class="${p.orig_price ? 'price-sale' : 'price-current'}">₨${p.price.toLocaleString()}</span>
+          ${p.origPrice ? `<span class="price-original">₨${p.origPrice.toLocaleString()}</span>` : ''}
+          <span class="${p.origPrice ? 'price-sale' : 'price-current'}">₨${p.price.toLocaleString()}</span>
         </div>
         <div class="product-colors">
-          ${(p.colors||[]).map(c => `<div class="color-swatch" style="background:${c}"></div>`).join('')}
+          ${p.colors.map(c => `<div class="color-swatch" style="background:${c}" title="Color option"></div>`).join('')}
         </div>
       </div>
     </div>
   `).join('');
 }
 
+// ---- FILTER ----
 function filterProducts(cat, btn) {
   if (btn) {
     document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
   }
-  loadProducts(cat);
+  renderProducts(cat);
   if (cat !== 'All') document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
 }
 
-// ========== CART ==========
+// ---- CART ----
 function openCart() {
   document.getElementById('cartOverlay').classList.add('open');
   document.getElementById('cartDrawer').classList.add('open');
@@ -1949,7 +1473,6 @@ function closeCart() {
 }
 function addToCart(id, size = 'M') {
   const product = products.find(p => p.id === id);
-  if (!product) return;
   const existing = cart.find(i => i.id === id && i.size === size);
   if (existing) existing.qty++;
   else cart.push({ ...product, qty: 1, size });
@@ -1958,11 +1481,16 @@ function addToCart(id, size = 'M') {
 }
 function removeFromCart(id, size) {
   cart = cart.filter(i => !(i.id === id && i.size === size));
-  renderCart(); updateCartCount();
+  renderCart();
+  updateCartCount();
 }
 function updateQty(id, size, delta) {
   const item = cart.find(i => i.id === id && i.size === size);
-  if (item) { item.qty += delta; if (item.qty <= 0) removeFromCart(id, size); else renderCart(); }
+  if (item) {
+    item.qty += delta;
+    if (item.qty <= 0) removeFromCart(id, size);
+    else renderCart();
+  }
   updateCartCount();
 }
 function updateCartCount() {
@@ -1976,12 +1504,13 @@ function renderCart() {
   const footer = document.getElementById('cartFooter');
   if (cart.length === 0) {
     container.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon">🛍</div><p>Your bag is empty.<br>Add something beautiful.</p></div>`;
-    footer.style.display = 'none'; return;
+    footer.style.display = 'none';
+    return;
   }
   footer.style.display = 'block';
   container.innerHTML = cart.map(item => `
     <div class="cart-item">
-      <div class="cart-item-img"><div class="thumb-bg ${item.pattern||'pattern-weave'}"></div></div>
+      <div class="cart-item-img"><div class="thumb-bg ${item.pattern}"></div></div>
       <div class="cart-item-info">
         <p class="cart-item-name">${item.name}</p>
         <p class="cart-item-meta">Size: ${item.size} · ${item.category}</p>
@@ -1999,19 +1528,20 @@ function renderCart() {
   document.getElementById('cartTotal').textContent = '₨' + total.toLocaleString();
 }
 
-// ========== MODAL ==========
+// ---- MODAL ----
 function openModal(id) {
   const p = products.find(pr => pr.id === id);
-  if (!p) return;
-  currentModalProduct = p; currentSelectedSize = 'M';
-  document.getElementById('modalImgBg').className = `modal-img-bg ${p.pattern||'pattern-weave'}`;
+  currentModalProduct = p;
+  currentSelectedSize = 'M';
+  document.getElementById('modalImgBg').className = `modal-img-bg ${p.pattern}`;
   document.getElementById('modalCategory').textContent = p.category;
   document.getElementById('modalName').textContent = p.name;
-  document.getElementById('modalPrice').innerHTML = p.orig_price
-    ? `<span style="text-decoration:line-through;color:var(--mid);margin-right:0.5rem">₨${p.orig_price.toLocaleString()}</span><span style="color:var(--accent)">₨${p.price.toLocaleString()}</span>`
+  document.getElementById('modalPrice').innerHTML = p.origPrice
+    ? `<span style="text-decoration:line-through;color:var(--mid);margin-right:0.5rem">₨${p.origPrice.toLocaleString()}</span><span style="color:var(--accent)">₨${p.price.toLocaleString()}</span>`
     : `₨${p.price.toLocaleString()}`;
-  document.getElementById('modalDesc').textContent = p.description || '';
-  document.getElementById('sizeGrid').innerHTML = (p.sizes||['XS','S','M','L','XL','XXL']).map(s =>
+  document.getElementById('modalDesc').textContent = p.desc;
+  const sizes = ['XS','S','M','L','XL','XXL'];
+  document.getElementById('sizeGrid').innerHTML = sizes.map(s =>
     `<button class="size-btn ${s==='M'?'selected':''}" onclick="selectSize('${s}', this)">${s}</button>`
   ).join('');
   document.getElementById('modalOverlay').classList.add('open');
@@ -2031,105 +1561,74 @@ function selectSize(size, btn) {
 function addFromModal() {
   if (currentModalProduct) {
     addToCart(currentModalProduct.id, currentSelectedSize || 'M');
-    closeModal(); setTimeout(openCart, 300);
+    closeModal();
+    setTimeout(openCart, 300);
   }
 }
 
-// ========== WISHLIST ==========
-async function toggleWishlist(id) {
-  if (!currentUser) { openAuth(); showNotification('Please sign in to use wishlist'); return; }
-  try {
-    const res = await fetch(`${API}/wishlist/toggle`, {
-      method: 'POST', headers: {'Content-Type':'application/json','Authorization':`Bearer ${authToken}`},
-      body: JSON.stringify({ product_id: id })
-    });
-    const data = await res.json();
-    const btn = document.getElementById(`wl-${id}`);
-    if (data.action === 'added') { btn.textContent = '♥'; btn.style.color = 'var(--accent)'; showNotification(data.message); }
-    else { btn.textContent = '♡'; btn.style.color = ''; showNotification(data.message); }
-  } catch(e) { showNotification('Could not update wishlist'); }
+// ---- WISHLIST ----
+function wishlist(id) {
+  const p = products.find(pr => pr.id === id);
+  showNotification(`${p.name} added to wishlist ♡`);
 }
 
-// ========== NOTIFICATION ==========
+// ---- NOTIFICATION ----
 function showNotification(msg) {
   const el = document.getElementById('notification');
-  el.textContent = msg; el.classList.add('show');
+  el.textContent = msg;
+  el.classList.add('show');
   setTimeout(() => el.classList.remove('show'), 3000);
 }
 
-// ========== CHECKOUT ==========
+// ---- CHECKOUT ----
 function checkout() {
   if (cart.length === 0) return;
-  if (!currentUser) { closeCart(); openAuth(); showNotification('Please sign in to checkout'); return; }
-  // Show checkout form
-  const summary = document.getElementById('checkoutSummary');
   const total = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
-  summary.innerHTML = `
-    <h4>Order Summary</h4>
-    ${cart.map(i => `<div class="checkout-item-row"><span>${i.name} (${i.size}) x${i.qty}</span><span>₨${(i.price*i.qty).toLocaleString()}</span></div>`).join('')}
-    <div class="checkout-total-row"><span>Total</span><span>₨${total.toLocaleString()}</span></div>
-  `;
-  document.getElementById('shipName').value = currentUser.name || '';
-  document.getElementById('shipPhone').value = currentUser.phone || '';
-  document.getElementById('shipCity').value = currentUser.city || '';
   closeCart();
-  document.getElementById('checkoutFormOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
+  showNotification(`Order of ₨${total.toLocaleString()} placed! 🎉`);
+  cart = [];
+  updateCartCount();
 }
 
-function closeCheckoutForm() {
-  document.getElementById('checkoutFormOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-async function submitOrder() {
-  const errEl = document.getElementById('checkoutError');
-  errEl.classList.remove('show');
-  const shipping = {
-    name: document.getElementById('shipName').value,
-    phone: document.getElementById('shipPhone').value,
-    address: document.getElementById('shipAddress').value,
-    city: document.getElementById('shipCity').value,
-  };
-  if (!shipping.name || !shipping.address || !shipping.city) {
-    errEl.textContent = 'Please fill name, address and city'; errEl.classList.add('show'); return;
-  }
-  const items = cart.map(i => ({ product_id: i.id, quantity: i.qty, size: i.size }));
-  const payment_method = document.getElementById('paymentMethod').value;
-  try {
-    const res = await fetch(`${API}/orders`, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json','Authorization':`Bearer ${authToken}`},
-      body: JSON.stringify({ items, shipping, payment_method })
-    });
-    const data = await res.json();
-    if (!res.ok) { errEl.textContent = data.error; errEl.classList.add('show'); return; }
-    closeCheckoutForm();
-    cart = []; updateCartCount();
-    showNotification(`🎉 Order #${data.order_id} placed! Total: ₨${data.total_amount.toLocaleString()}`);
-  } catch(e) { errEl.textContent = 'Server error. Try again.'; errEl.classList.add('show'); }
-}
-
-// ========== NEWSLETTER (API) ==========
-async function subscribeNewsletter() {
+// ---- NEWSLETTER ----
+function subscribeNewsletter() {
   const email = document.getElementById('newsletterEmail').value;
-  if (!email || !email.includes('@')) { showNotification('Please enter a valid email address'); return; }
-  try {
-    const res = await fetch(`${API}/newsletter/subscribe`, {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ email })
-    });
-    const data = await res.json();
-    showNotification(data.message);
-    document.getElementById('newsletterEmail').value = '';
-  } catch(e) { showNotification('Could not subscribe. Try again.'); }
+  if (!email || !email.includes('@')) {
+    showNotification('Please enter a valid email address');
+    return;
+  }
+  showNotification(`Welcome to M.A.J Attire! ✨`);
+  document.getElementById('newsletterEmail').value = '';
 }
 
-function openSearch() { showNotification('Search feature coming soon...'); }
+// ---- SEARCH ----
+function openSearch(){
+  document.getElementById('searchOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('globalSearchInput').focus(),100);
+}
+function closeSearch(){
+  document.getElementById('searchOverlay').classList.remove('open');
+  document.getElementById('globalSearchInput').value='';
+  document.getElementById('searchResultsArea').innerHTML='';
+}
+async function doGlobalSearch(val){
+  const q=val.trim().toLowerCase();
+  const area=document.getElementById('searchResultsArea');
+  if(!q){area.innerHTML='';return;}
+  area.innerHTML='<div style="text-align:center;padding:2rem;color:var(--mid);font-size:0.7rem;letter-spacing:0.1em;">Searching...</div>';
+  try{
+    const res=await fetch('https://maj-attire-backend-production.up.railway.app/api/products');
+    const data=await res.json();
+    const products=(data.products||[]).filter(p=>(p.name||'').toLowerCase().includes(q)||(p.category||'').toLowerCase().includes(q)||(p.description||'').toLowerCase().includes(q)).slice(0,6);
+    if(!products.length){area.innerHTML='<div style="text-align:center;padding:2rem;color:var(--mid);font-size:0.7rem;letter-spacing:0.1em;">No products found for "'+val+'"</div>';return;}
+    area.innerHTML='<p style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--mid);margin-bottom:1rem">'+products.length+' results for "'+val+'"</p>'+
+    products.map(p=>'<div onclick="window.location.href=\'product.html?id='+p.id+'\'" style="display:flex;gap:1rem;padding:1rem;cursor:pointer;border-bottom:1px solid rgba(10,10,10,0.08);transition:background 0.2s" onmouseover="this.style.background=\'rgba(201,169,110,0.05)\'" onmouseout="this.style.background=\'transparent\'"><div style="width:50px;height:65px;flex-shrink:0;position:relative;overflow:hidden"><div class="'+(p.pattern||'pattern-weave')+'" style="position:absolute;inset:0"></div></div><div style="flex:1"><p style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold)">'+p.category+'</p><p style="font-size:0.85rem;font-family:\'Cormorant Garamond\',serif;margin:0.2rem 0">'+p.name+'</p><p style="font-size:0.75rem;font-weight:600">&#8360;'+Number(p.price).toLocaleString()+'</p></div>'+(p.badge?'<span style="align-self:flex-start;font-size:0.5rem;letter-spacing:0.15em;padding:0.2rem 0.5rem;background:'+(p.badge==='Sale'?'var(--accent)':'var(--black)')+';color:'+(p.badge==='Sale'?'#fff':'var(--gold)')+'">'+p.badge+'</span>':'')+'</div>').join('')+
+    '<div onclick="window.location.href=\'collections.html?search='+encodeURIComponent(val)+'\'" style="text-align:center;padding:1rem;cursor:pointer;font-size:0.65rem;letter-spacing:0.15em;color:var(--gold);text-transform:uppercase;border-top:1px solid rgba(10,10,10,0.1)">View All Results &#8594;</div>';
+  }catch(e){area.innerHTML='<div style="text-align:center;padding:2rem;color:var(--mid)">Error loading results</div>';}
+}
 
-// ========== INIT ==========
-updateNavAuth();
-loadProducts();
+// ---- INIT ----
+renderProducts();
 </script>
 </body>
 </html>

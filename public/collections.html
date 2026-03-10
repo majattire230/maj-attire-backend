@@ -36,6 +36,16 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.2rem 4rem;display
 .filter-tab.active{background:var(--black);color:var(--white);border-color:var(--black)}
 .results-count{font-size:0.6rem;letter-spacing:0.15em;color:var(--mid);white-space:nowrap}
 .sort-select{padding:0.5rem 1rem;font-size:0.6rem;font-family:'Montserrat',sans-serif;border:1px solid rgba(10,10,10,0.2);background:var(--white);cursor:pointer;color:var(--charcoal);letter-spacing:0.1em;outline:none}
+.search-wrap{position:relative;display:flex;align-items:center}
+.search-input{padding:0.5rem 2.2rem 0.5rem 0.9rem;font-size:0.6rem;font-family:'Montserrat',sans-serif;border:1px solid rgba(10,10,10,0.2);background:var(--white);color:var(--charcoal);letter-spacing:0.1em;outline:none;width:180px;transition:border-color 0.3s,width 0.3s}
+.search-input:focus{border-color:var(--gold);width:220px}
+.search-input::placeholder{color:var(--mid)}
+.search-icon{position:absolute;right:0.6rem;font-size:0.75rem;color:var(--mid);pointer-events:none}
+.search-clear{position:absolute;right:0.6rem;font-size:0.75rem;color:var(--mid);cursor:pointer;display:none;background:none;border:none;padding:0}
+.no-results{grid-column:1/-1;text-align:center;padding:5rem 2rem;color:var(--mid)}
+.no-results-icon{font-size:3rem;margin-bottom:1rem}
+.no-results h3{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;margin-bottom:0.5rem;color:var(--black)}
+.no-results p{font-size:0.7rem;letter-spacing:0.1em}
 .collections-main{padding:3rem 4rem}
 .products-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;margin-bottom:4rem}
 .product-card{cursor:pointer;animation:fadeUp 0.5s ease both}
@@ -161,6 +171,11 @@ footer{background:var(--black);color:var(--white);padding:4rem 4rem 2rem;margin-
     <button class="filter-tab" onclick="filterProducts('Traditional',this)">Traditional</button>
     <button class="filter-tab" onclick="filterProducts('Streetwear',this)">Streetwear</button>
   </div>
+  <div class="search-wrap">
+    <input class="search-input" id="searchInput" type="text" placeholder="Search products..." oninput="searchProducts(this.value)">
+    <span class="search-icon" id="searchIcon">🔍</span>
+    <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
+  </div>
   <span class="results-count" id="resultsCount">Loading...</span>
   <select class="sort-select" id="sortSelect" onchange="applySort()">
     <option value="default">Sort: Default</option>
@@ -248,6 +263,7 @@ footer{background:var(--black);color:var(--white);padding:4rem 4rem 2rem;margin-
 <script>
 const API='https://maj-attire-backend-production.up.railway.app/api';
 let allProducts=[],filteredProducts=[],cart=JSON.parse(localStorage.getItem('maj_cart')||'[]');
+let activeCategory='All', activeSearch='';
 let currentUser=JSON.parse(localStorage.getItem('maj_user')||'null');
 let authToken=localStorage.getItem('maj_token')||null;
 let currentModalProduct=null,currentSelectedSize=null;
@@ -256,11 +272,20 @@ window.addEventListener('DOMContentLoaded',()=>{
   updateNavAuth();updateCartCount();
   const params=new URLSearchParams(window.location.search);
   const cat=params.get('cat');
+  const search=params.get('search');
   if(cat){
     document.querySelectorAll('.filter-tab').forEach(b=>b.classList.toggle('active',b.textContent.trim()===cat));
     document.getElementById('heroCatLabel').textContent=cat+' Collection — M.A.J Attire';
     loadProducts(cat);
   } else { loadProducts('All'); }
+  if(search){
+    const inp=document.getElementById('searchInput');
+    if(inp){
+      inp.value=search;
+      activeSearch=search.toLowerCase();
+      inp.dispatchEvent(new Event('input'));
+    }
+  }
 });
 
 async function loadProducts(category='All'){
@@ -288,7 +313,10 @@ async function loadProducts(category='All'){
 function renderProducts(){
   const grid=document.getElementById('productsGrid');
   document.getElementById('resultsCount').textContent=filteredProducts.length+' products';
-  if(filteredProducts.length===0){grid.innerHTML='<div class="loading-state">No products found.</div>';return;}
+  if(filteredProducts.length===0){
+    grid.innerHTML='<div class="no-results"><div class="no-results-icon">🔍</div><h3>No products found</h3><p>'+(activeSearch?'"'+activeSearch+'" se koi product nahi mila':'This category is empty')+'</p></div>';
+    return;
+  }
   grid.innerHTML=filteredProducts.map((p,i)=>`
     <div class="product-card" style="animation-delay:${i*0.05}s" onclick="window.location.href='product.html?id='+${p.id}">
       <div class="product-image">
@@ -312,21 +340,45 @@ function renderProducts(){
 }
 
 function filterProducts(cat,btn){
-  document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
+  activeCategory=cat;
+  document.querySelectorAll('.filter-tab').forEach(b=>b.classList.remove('active'));
   if(btn)btn.classList.add('active');
-  document.getElementById('heroCatLabel').textContent=(cat==='All'?'All Products':'  '+cat+' Collection')+' — M.A.J Attire';
-  loadProducts(cat);window.scrollTo({top:0,behavior:'smooth'});
+  applyAllFilters();
 }
 
-function applySort(){
+function searchProducts(val){
+  activeSearch=val.trim().toLowerCase();
+  const clearBtn=document.getElementById('searchClear');
+  const icon=document.getElementById('searchIcon');
+  if(activeSearch){clearBtn.style.display='block';icon.style.display='none';}
+  else{clearBtn.style.display='none';icon.style.display='block';}
+  applyAllFilters();
+}
+
+function clearSearch(){
+  document.getElementById('searchInput').value='';
+  activeSearch='';
+  document.getElementById('searchClear').style.display='none';
+  document.getElementById('searchIcon').style.display='block';
+  applyAllFilters();
+}
+
+function applyAllFilters(){
   const sort=document.getElementById('sortSelect').value;
   filteredProducts=[...allProducts];
+  // Category filter
+  if(activeCategory&&activeCategory!=='All')filteredProducts=filteredProducts.filter(p=>p.category===activeCategory||p.category.includes(activeCategory));
+  // Search filter
+  if(activeSearch)filteredProducts=filteredProducts.filter(p=>(p.name||'').toLowerCase().includes(activeSearch)||(p.category||'').toLowerCase().includes(activeSearch)||(p.description||'').toLowerCase().includes(activeSearch));
+  // Sort
   if(sort==='price-low')filteredProducts.sort((a,b)=>a.price-b.price);
   else if(sort==='price-high')filteredProducts.sort((a,b)=>b.price-a.price);
   else if(sort==='new')filteredProducts=filteredProducts.filter(p=>p.badge==='New').concat(filteredProducts.filter(p=>p.badge!=='New'));
   else if(sort==='sale')filteredProducts=filteredProducts.filter(p=>p.badge==='Sale').concat(filteredProducts.filter(p=>p.badge!=='Sale'));
   renderProducts();
 }
+
+function applySort(){applyAllFilters();}
 
 function openModal(id){
   const p=allProducts.find(x=>x.id===id);if(!p)return;
