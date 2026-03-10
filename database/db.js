@@ -156,4 +156,5 @@ function initDB() {
   });
 }
 
-module.exports = { db, initDB };
+async function seedProducts() {
+  const count = await new Promise((res) => db.get('SELECT COUNT(*) as c FROM products', (e, r) ;

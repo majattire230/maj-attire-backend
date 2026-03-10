@@ -17,6 +17,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // ─── Database Init ────────────────────────────────────────────
 const { initDB } = require('./database/db');
 initDB();
+const { seedProducts } = require('./database/db');
+initDB().then(() => seedProducts());
 
 // ─── Routes ───────────────────────────────────────────────────
 app.use('/api/auth',       require('./routes/auth'));
