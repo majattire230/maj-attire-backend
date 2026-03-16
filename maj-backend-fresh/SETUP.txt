@@ -1,0 +1,31 @@
+==============================================
+  MAJ ATTIRE BACKEND — SETUP GUIDE
+==============================================
+
+STEP 1: .env file mein sirf yeh ek line change karo
+------------------------------------------------------
+.env file kholo aur line 3 ko yeh banao:
+
+MONGO_URI=mongodb+srv://USERNAME:PASSWORD@cluster0.6y8zgrr.mongodb.net/maj-attire?retryWrites=true&w=majority
+
+USERNAME aur PASSWORD apna Atlas wala daalo.
+
+STEP 2: Terminal mein yeh commands chalaao
+------------------------------------------
+cd maj-attire-backend
+npm install
+npm run dev
+
+STEP 3: Yeh message aana chahiye
+----------------------------------
+✅ MongoDB Connected!
+✅ Admin user created
+🚀 Server: http://localhost:5000
+
+STEP 4: Admin Panel
+--------------------
+http://localhost:3000/admin/login
+Username: admin
+Password: majattire2024
+
+==============================================
